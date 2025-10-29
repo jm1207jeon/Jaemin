@@ -1,0 +1,156 @@
+Risk Management Procedure
+Document ID: QP-008
+Version: 1.5
+Effective Date: 2024-01-15
+
+1. Purpose
+To establish a systematic approach for risk management throughout the product lifecycle in accordance with ISO 14971:2019 for medical devices.
+
+2. Scope
+This procedure applies to all medical devices developed, manufactured, and distributed by the organization. It covers risk management activities from concept through design, development, production, post-production, and decommissioning.
+
+3. Responsibilities
+3.1 Risk Management Team
+- Identify hazards and hazardous situations
+- Perform risk analysis and evaluation
+- Implement risk control measures
+- Monitor effectiveness of risk controls
+
+3.2 Design Team
+- Incorporate risk management into design activities
+- Implement design controls based on risk assessment
+- Document design decisions related to risk
+
+3.3 Quality Assurance
+- Review and approve risk management files
+- Ensure compliance with ISO 14971
+- Coordinate with regulatory affairs for submissions
+
+4. Risk Management Process
+4.1 Risk Management Planning
+- Define scope of risk management activities
+- Assign responsibilities and authorities
+- Establish criteria for risk acceptability
+- Define verification activities
+
+Risk Acceptability Criteria:
+- Severity levels: Catastrophic, Critical, Moderate, Negligible
+- Probability levels: Frequent, Probable, Occasional, Remote, Improbable
+- Risk matrix combining severity and probability
+
+4.2 Risk Analysis
+Step 1: Identify intended use and foreseeable misuse
+- Normal use conditions
+- User characteristics and training
+- Use environment
+
+Step 2: Identify hazards
+- Biological and chemical hazards
+- Environmental hazards
+- Hazards related to use or misuse
+- Functional failures
+- Cybersecurity threats (for connected devices)
+
+Step 3: Estimate risks for each hazardous situation
+- Severity of harm (P1)
+- Probability of occurrence of harm (P2)
+- Overall risk = f(P1, P2)
+
+4.3 Risk Evaluation
+- Compare estimated risks against acceptability criteria
+- Determine if risk reduction is required
+- Document rationale for risk acceptability
+
+4.4 Risk Control
+Hierarchy of risk control measures:
+1. Inherent safety by design
+2. Protective measures in the device or manufacturing process
+3. Information for safety (labeling, instructions for use)
+
+For each risk control measure:
+- Verify implementation
+- Validate effectiveness
+- Assess introduction of new hazards
+- Assess impact on overall residual risk
+
+4.5 Residual Risk Evaluation
+- Evaluate each residual risk against criteria
+- Evaluate overall residual risk acceptability
+- Risk-benefit analysis where applicable
+
+4.6 Risk Management Review
+- Review of risk management activities before commercial release
+- Ensure risk management plan has been appropriately implemented
+- Ensure overall residual risk is acceptable
+
+4.7 Production and Post-Production Information
+- Collect and review information from production
+- Monitor adverse events and complaints
+- Conduct trend analysis
+- Review and update risk management file as needed
+
+5. Risk Management File
+The risk management file must contain:
+- Risk management plan
+- Hazard identification and analysis
+- Risk estimation and evaluation worksheets
+- Risk control measures and verification
+- Residual risk evaluation
+- Risk-benefit analysis
+- Overall risk management review report
+- Production and post-production information review
+
+6. Integration with Design Controls
+Risk management activities are integrated with design and development per QP-005:
+- Design inputs informed by hazard analysis
+- Design outputs include risk control measures
+- Design verification confirms risk controls are implemented
+- Design validation confirms risk controls are effective
+
+7. Software Risk Management
+For devices containing software (per IEC 62304):
+- Software safety classification based on potential harm
+- Software hazard analysis
+- Software risk control measures
+- Cybersecurity risk assessment
+
+8. Biocompatibility Risk Assessment
+Per ISO 10993 series:
+- Identify patient contact type and duration
+- Evaluate biocompatibility endpoints
+- Risk management for biological hazards
+
+9. Post-Market Surveillance
+Integration with complaint handling (QP-025):
+- Monitor field performance
+- Identify new hazards or hazardous situations
+- Update risk analysis based on post-market data
+- Implement additional risk controls if needed
+- Regulatory reporting (FDA MDR, EU vigilance)
+
+10. Training
+Personnel involved in risk management must complete training on:
+- ISO 14971 requirements
+- Company risk management procedures
+- Risk analysis tools (FMEA, FTA, etc.)
+- Documentation requirements
+
+11. Related Documents
+- QMS Manual (QMS-MAN-001)
+- Design Control Procedure (QP-005)
+- CAPA Procedure (QP-020)
+- Complaint Handling Procedure (QP-025)
+- ISO 13485:2016
+- ISO 14971:2019
+- IEC 62304:2006
+- IEC 62366:2015 (Usability engineering)
+
+12. Forms and Templates
+- Risk Management Plan Template (FM-008-01)
+- Hazard Analysis Worksheet (FM-008-02)
+- Risk Evaluation Matrix (FM-008-03)
+- Risk Management Report (FM-008-04)
+
+Approved by: Director of Quality
+Date: 2024-01-15
+Next Review: 2025-01-15

@@ -1,0 +1,335 @@
+ISO 13485:2016 Compliance Checklist
+Document ID: CHK-001
+Version: 1.0
+Audit Date: 2024-10-15
+
+This checklist is used for internal audits to verify compliance with ISO 13485:2016 requirements.
+
+CLAUSE 4: QUALITY MANAGEMENT SYSTEM
+
+4.1 General Requirements
+☑ QMS established, documented, implemented and maintained
+☑ Processes and their interactions identified and documented
+☑ Process controls and monitoring established
+☑ Records maintained per requirements
+
+4.2 Documentation Requirements
+4.2.1 General
+☑ Quality policy and objectives documented
+☑ Quality manual established
+☑ Procedures required by ISO 13485 documented
+☑ Documents needed for effective operation established
+
+4.2.2 Quality Manual
+☑ Scope of QMS defined (QMS-MAN-001)
+☑ Exclusions justified
+☑ QMS procedures documented or referenced
+☑ Process interactions described
+
+4.2.3 Medical Device File
+☑ Device master record maintained for each device type
+☑ Design history file (DHF) maintained
+☑ Device history record (DHR) maintained for each batch/unit
+
+4.2.4 Document Control (QP-001)
+☑ Document approval before issue
+☑ Documents reviewed and updated as necessary
+☑ Changes identified and current revision status clear
+☑ Relevant documents available at points of use
+☑ Obsolete documents prevented from unintended use
+
+4.2.5 Control of Records (QP-003)
+☑ Records legible, identifiable and retrievable
+☑ Storage, protection, and retention defined
+☑ Records remain legible throughout retention period
+☑ Retention times established per regulatory requirements
+
+CLAUSE 5: MANAGEMENT RESPONSIBILITY
+
+5.1 Management Commitment
+☑ Quality policy established
+☑ Quality objectives established
+☑ Management reviews conducted
+☑ Resources availability ensured
+
+5.2 Customer Focus
+☑ Customer requirements determined and met
+☑ Regulatory requirements identified and met
+☑ Customer satisfaction monitored
+
+5.3 Quality Policy
+☑ Appropriate to organization's purpose
+☑ Commitment to meet requirements included
+☑ Framework for quality objectives provided
+☑ Communicated and understood within organization
+
+5.4 Planning
+5.4.1 Quality Objectives
+☑ Objectives established at relevant functions and levels
+☑ Objectives measurable and consistent with quality policy
+☑ Objectives monitored and updated
+
+5.4.2 QMS Planning
+☑ QMS planning conducted
+☑ Changes to QMS planned and controlled
+☑ QMS integrity maintained during changes
+
+5.5 Responsibility, Authority and Communication
+☑ Responsibilities and authorities defined and communicated
+☑ Management representative appointed
+☑ Internal communication processes established
+
+5.6 Management Review
+☑ Management reviews conducted at planned intervals
+☑ Review inputs defined and documented
+☑ Review outputs include decisions and actions
+☑ Records of management reviews maintained (QP-015)
+
+CLAUSE 6: RESOURCE MANAGEMENT
+
+6.1 Provision of Resources
+☑ Resources for QMS implementation determined and provided
+☑ Resources for regulatory requirements provided
+☑ Resources for customer satisfaction provided
+
+6.2 Human Resources
+☑ Competence requirements determined
+☑ Training provided or other actions taken
+☑ Competence of personnel verified
+☑ Awareness of quality policy and objectives ensured
+☑ Training effectiveness evaluated
+☑ Records of education, training, skills maintained
+
+6.3 Infrastructure
+☑ Buildings, workspace and utilities adequate
+☑ Process equipment (hardware and software) adequate
+☑ Supporting services adequate
+☑ Maintenance activities defined for equipment
+
+6.4 Work Environment and Contamination Control
+☑ Work environment determined and managed
+☑ Environmental conditions monitored and controlled
+☑ Contamination control documented where applicable
+☑ Cleanroom classification and monitoring (if applicable)
+
+CLAUSE 7: PRODUCT REALIZATION
+
+7.1 Planning of Product Realization
+☑ Product realization processes planned
+☑ Risk management activities defined (QP-008, ISO 14971)
+☑ Quality objectives and requirements established
+☑ Verification, validation, monitoring activities defined
+
+7.2 Customer-Related Processes
+7.2.1 Determination of Requirements
+☑ Product requirements specified
+☑ Regulatory requirements determined
+☑ User training requirements considered
+
+7.2.2 Review of Requirements
+☑ Requirements reviewed before commitment
+☑ Contract or order requirements defined and confirmed
+☑ Differences resolved
+☑ Records of review maintained
+
+7.2.3 Communication
+☑ Communication with customers established
+☑ Advisory notices process established
+☑ Customer feedback including complaints handled (QP-025)
+
+7.3 Design and Development (QP-005)
+7.3.1 Design Planning
+☑ Design stages defined
+☑ Review, verification, validation activities defined
+☑ Responsibilities and authorities defined
+☑ Design plan updated throughout development
+
+7.3.2 Design Inputs
+☑ Functional, performance requirements determined
+☑ Regulatory requirements included
+☑ Risk management requirements included
+☑ Design inputs reviewed and approved
+
+7.3.3 Design Outputs
+☑ Design outputs meet input requirements
+☑ Outputs provide information for purchasing, production
+☑ Acceptance criteria defined
+☑ Essential characteristics for safety identified
+
+7.3.4 Design Review
+☑ Systematic design reviews conducted
+☑ Review participants include relevant functions
+☑ Results and actions recorded
+
+7.3.5 Design Verification
+☑ Verification confirms outputs meet inputs
+☑ Verification plans and results documented
+☑ Statistical techniques used where appropriate
+
+7.3.6 Design Validation
+☑ Validation confirms product meets user needs
+☑ Validation performed on representative product
+☑ Clinical evaluation conducted per applicable regulations
+
+7.3.7 Design Transfer
+☑ Design outputs verified as suitable for manufacturing
+☑ Design transfer documented and approved
+
+7.3.8 Design Changes
+☑ Changes identified and documented
+☑ Changes reviewed, verified, validated as appropriate
+☑ Changes approved before implementation
+☑ Impact of changes evaluated including in-progress product
+
+7.4 Purchasing (QP-012)
+☑ Purchased product meets requirements
+☑ Suppliers evaluated and selected based on criteria
+☑ Re-evaluation of suppliers conducted
+☑ Purchasing documents describe product to be purchased
+☑ Verification of purchased product conducted
+
+7.5 Production and Service Provision
+7.5.1 Control of Production
+☑ Production carried out under controlled conditions
+☑ Work instructions available where needed
+☑ Suitable equipment used
+☑ Monitoring and measuring devices available and used
+☑ Process validation conducted (QP-010)
+
+7.5.2 Cleanliness of Product
+☑ Cleanliness requirements specified
+☑ Product cleaned and contamination controlled
+
+7.5.3 Installation Activities
+☑ Installation requirements established
+☑ Installation verification criteria defined
+☑ Installation records maintained
+
+7.5.4 Servicing Activities
+☑ Servicing procedures established where required
+☑ Service reports analyzed for feedback
+
+7.5.5 Sterilization
+☑ Sterilization processes validated
+☑ Sterilization batch records maintained
+☑ Traceability to each production batch maintained
+
+7.5.6 Validation of Processes
+☑ Production processes validated where output cannot be verified
+☑ Revalidation conducted including for changes
+☑ Validation records maintained (QP-010)
+
+7.5.7 Labeling and Traceability
+☑ Product identified throughout realization
+☑ Traceability documented per requirements
+☑ Unique device identification where required (UDI)
+☑ Device history record (DHR) maintained
+
+7.5.8 Customer Property
+☑ Customer property identified, verified, protected
+☑ Lost, damaged or unsuitable property reported to customer
+
+7.5.9 Preservation of Product
+☑ Product preserved during internal processing and delivery
+☑ Preservation includes identification, handling, packaging, storage
+
+7.6 Control of Monitoring and Measuring Equipment
+☑ Measuring equipment identified and calibrated
+☑ Calibration status identified on equipment
+☑ Equipment safeguarded from adjustments
+☑ Records of calibration maintained
+☑ Equipment verified before use if found out of calibration
+☑ Software for monitoring and measurement validated
+
+CLAUSE 8: MEASUREMENT, ANALYSIS AND IMPROVEMENT
+
+8.1 General
+☑ Monitoring, measurement, analysis, improvement processes planned
+☑ Statistical techniques identified where applicable
+
+8.2 Monitoring and Measurement
+8.2.1 Feedback
+☑ Feedback system established as early warning system
+☑ Post-production data collected and analyzed
+☑ Complaints handled per procedure (QP-025)
+
+8.2.2 Complaint Handling (QP-025)
+☑ Complaint handling procedure documented
+☑ Complaints investigated
+☑ Regulatory reporting requirements met (FDA MDR, EU vigilance)
+☑ Investigation and actions documented
+
+8.2.3 Reporting to Regulatory Authorities
+☑ Adverse events reported to authorities per requirements
+☑ 21 CFR Part 803 (FDA MDR) compliance
+☑ EU MDR vigilance requirements met
+☑ MFDS, PMDA reporting as applicable
+
+8.2.4 Internal Audit (QP-015)
+☑ Internal audits conducted at planned intervals
+☑ Audit program planned considering process importance and previous results
+☑ Audit criteria, scope, frequency, methods defined
+☑ Auditors objective and impartial
+☑ Audit results reported to management
+☑ Corrections and corrective actions taken timely
+
+8.2.5 Monitoring and Measurement of Processes
+☑ Methods applied to demonstrate process capability
+☑ Processes achieve planned results verified
+☑ Corrective actions taken when planned results not achieved
+
+8.2.6 Monitoring and Measurement of Product
+☑ Product characteristics monitored and measured
+☑ Acceptance criteria met
+☑ Records indicate person authorizing release
+☑ Product release and service delivery not proceed until requirements met
+
+8.3 Control of Nonconforming Product
+☑ Nonconforming product identified and controlled
+☑ Actions taken to eliminate detected nonconformity
+☑ Rework procedure documented (QP-018)
+☑ Records maintained including nature and actions taken
+☑ Regulatory notification conducted where required
+☑ Disposition of nonconforming product documented
+
+8.4 Analysis of Data
+☑ Data collected and analyzed from monitoring and measurement
+☑ Data analyzed for customer satisfaction, product conformity
+☑ Process trends and supplier performance analyzed
+☑ Statistical techniques used where appropriate
+
+8.5 Improvement
+8.5.1 General
+☑ Continual improvement through quality policy, objectives, audit results
+☑ Analysis of data, corrective and preventive action used for improvement
+
+8.5.2 Corrective Action (QP-020)
+☑ Corrective actions taken to eliminate causes of nonconformities
+☑ Procedure established for reviewing nonconformities
+☑ Root cause determined
+☑ Need for action to prevent recurrence evaluated
+☑ Corrective actions implemented and recorded
+☑ Effectiveness of actions verified
+
+8.5.3 Preventive Action (QP-020)
+☑ Preventive actions determined to eliminate potential nonconformities
+☑ Sources of potential nonconformities identified
+☑ Need for preventive action evaluated
+☑ Actions implemented and recorded
+☑ Effectiveness of actions verified
+
+SUMMARY
+Total Requirements Checked: 127
+Conforming: 127
+Non-Conforming: 0
+Observations: 0
+
+Overall Compliance: 100%
+
+Audit Team:
+Lead Auditor: Jane Smith
+Auditor: John Doe
+
+Reviewed by: Quality Manager
+Date: 2024-10-15
+Next Audit: 2025-04-15

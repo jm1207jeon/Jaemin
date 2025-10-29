@@ -1,0 +1,111 @@
+Quality Management System Manual
+Document ID: QMS-MAN-001
+Version: 2.0
+Effective Date: 2024-01-01
+
+1. Introduction
+This Quality Management System (QMS) Manual describes the quality management system established and maintained by our organization for medical device manufacturing in accordance with ISO 13485:2016 and 21 CFR Part 820.
+
+2. Scope
+This QMS applies to the design, development, production, installation, and servicing of medical devices including:
+- Class II medical devices
+- IVD (In Vitro Diagnostic) devices
+- Software as a Medical Device (SaMD)
+
+3. Quality Policy
+Our organization is committed to:
+- Meeting customer requirements and applicable regulatory requirements
+- Maintaining an effective quality management system
+- Continual improvement of the QMS effectiveness
+- Ensuring product safety and performance
+
+4. Management Responsibility
+Top management demonstrates leadership and commitment to the QMS by:
+- Establishing quality policy and objectives
+- Ensuring QMS requirements are integrated into business processes
+- Promoting use of risk-based thinking (ISO 14971)
+- Ensuring availability of resources
+
+5. Resource Management
+5.1 Human Resources
+- Personnel performing work affecting product quality must be competent based on education, training, skills and experience
+- Training requirements defined in procedure QP-002
+
+5.2 Infrastructure
+- Buildings, workspace, and utilities
+- Process equipment (hardware and software)
+- Support services
+
+5.3 Work Environment
+- Cleanroom facilities for sterile device manufacturing
+- Controlled environmental conditions
+- Personnel hygiene and contamination control
+
+6. Product Realization
+6.1 Design and Development
+- Design planning and controls (QP-005)
+- Design inputs and outputs
+- Design verification and validation
+- Design changes and design transfer
+
+6.2 Risk Management
+- Risk management process per ISO 14971
+- Risk analysis and evaluation
+- Risk control measures
+- Post-market surveillance for risk management
+
+6.3 Production and Service Provision
+- Process validation (QP-010)
+- Traceability requirements
+- Sterilization and packaging validation
+- Installation and servicing activities
+
+7. Measurement, Analysis and Improvement
+7.1 Monitoring and Measurement
+- Customer satisfaction monitoring
+- Internal audits (QP-015)
+- Process monitoring and product measurement
+- Statistical techniques
+
+7.2 Nonconformity and Corrective Action
+- Handling of nonconforming product
+- CAPA (Corrective and Preventive Action) system (QP-020)
+- Investigation and root cause analysis
+
+7.3 Post-Market Surveillance
+- Complaint handling (QP-025)
+- Adverse event reporting to regulatory authorities (FDA, MFDS)
+- Trend analysis
+- Post-market clinical follow-up
+
+8. Regulatory Compliance
+8.1 FDA Requirements
+- 21 CFR Part 820 (QSR)
+- 21 CFR Part 803 (MDR - Medical Device Reporting)
+- 510(k) submissions and PMA
+
+8.2 European Requirements
+- Medical Device Regulation (EU MDR 2017/745)
+- IVDR (EU 2017/746)
+- CE marking requirements
+
+8.3 Other Regulatory Bodies
+- MFDS (Korea)
+- PMDA (Japan)
+- TGA (Australia)
+
+9. Document Control
+All QMS documents are controlled per procedure QP-001. This includes:
+- Standard Operating Procedures (SOPs)
+- Work Instructions
+- Forms and Templates
+- Specifications
+
+10. References
+- ISO 13485:2016 - Medical devices - Quality management systems
+- ISO 14971:2019 - Application of risk management to medical devices
+- IEC 62304:2006 - Medical device software lifecycle processes
+- IEC 60601-1:2012 - Medical electrical equipment safety
+
+Approved by: Quality Manager
+Date: 2024-01-01
