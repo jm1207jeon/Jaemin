@@ -1,0 +1,250 @@
+# Medical Form Analyzer Configuration
+
+# Document Analysis Settings
+document_analysis:
+  ocr_engine: "tesseract"  # Options: tesseract, easyocr, doctr
+  ocr_languages: ["eng", "kor"]
+  dpi: 300
+  layout_model: "lp://PubLayNet/mask_rcnn_X_101_32x8d_FPN_3x/config"
+  confidence_threshold: 0.5
+
+  # Element Detection
+  detect_tables: true
+  detect_checkboxes: true
+  detect_signature_fields: true
+  detect_text_fields: true
+
+  # Density Calculation
+  density_grid_size: 50  # pixels
+  high_density_threshold: 0.7
+
+# Visual Attention Model Settings
+attention_model:
+  # Saliency Map
+  saliency_model: "deepgaze3"  # Options: deepgaze2, deepgaze3, itti_koch
+  saliency_resolution: [384, 512]
+  blur_sigma: 20
+
+  # Eye Tracking Simulation
+  reading_patterns:
+    - "f_pattern"
+    - "z_pattern"
+    - "gutenberg"
+
+  # Gaze Path Settings
+  fixation_duration_mean: 250  # milliseconds
+  fixation_duration_std: 50
+  saccade_velocity: 300  # degrees per second
+
+  # Attention Weights
+  top_left_weight: 1.0      # Primary Optical Area
+  top_right_weight: 0.6     # Strong Deceleration
+  bottom_left_weight: 0.3   # Weak Fallow
+  bottom_right_weight: 0.8  # Terminal Area
+
+  # Time on Task
+  max_scan_time: 180  # seconds
+  vigilance_decrement_start: 900  # 15 minutes
+
+# Risk Analysis Settings
+risk_analysis:
+  # Fitts's Law Parameters
+  fitts_law:
+    k_constant: 100  # milliseconds
+    distance_weight: 0.4
+    size_weight: 0.6
+    min_target_size: 20  # pixels
+    max_comfortable_distance: 500  # pixels
+
+  # Gestalt Principles
+  gestalt:
+    proximity_threshold: 50  # pixels
+    similarity_threshold: 0.7
+    repetition_habituation_threshold: 5
+
+  # Cognitive Load
+  cognitive_load:
+    max_elements_per_section: 10
+    max_nesting_depth: 3
+    ideal_line_length: [50, 75]  # characters
+    font_size_range: [10, 14]  # points
+
+  # Visual Clutter
+  visual_clutter:
+    methods:
+      - "edge_density"
+      - "feature_congestion"
+      - "subband_entropy"
+    high_clutter_threshold: 0.7
+
+  # Error Types Weights
+  error_weights:
+    omission: 1.0
+    commission: 0.8
+    sequence: 0.9
+    time: 0.6
+
+  # Risk Scoring
+  risk_levels:
+    low: [0, 30]
+    medium: [30, 60]
+    high: [60, 80]
+    critical: [80, 100]
+
+# Evaluation Settings
+evaluation:
+  # Scoring Categories
+  categories:
+    visual_clarity:
+      weight: 0.20
+      metrics:
+        - contrast_ratio
+        - color_differentiation
+        - whitespace_ratio
+
+    cognitive_load:
+      weight: 0.25
+      metrics:
+        - information_density
+        - element_complexity
+        - visual_clutter
+
+    error_prevention:
+      weight: 0.30
+      metrics:
+        - target_size_adequacy
+        - inter_element_distance
+        - field_grouping_quality
+        - habituation_risk
+
+    workflow_efficiency:
+      weight: 0.15
+      metrics:
+        - logical_flow_score
+        - completion_time_estimate
+        - backtracking_risk
+
+    compliance:
+      weight: 0.10
+      metrics:
+        - required_fields_present
+        - signature_placement
+        - traceability_elements
+
+  # Benchmark Standards
+  benchmarks:
+    excellent: [90, 100]
+    good: [75, 90]
+    acceptable: [60, 75]
+    needs_improvement: [40, 60]
+    critical: [0, 40]
+
+# Visualization Settings
+visualization:
+  # Heatmap
+  heatmap:
+    colormap: "jet"  # Options: jet, hot, viridis, plasma
+    alpha: 0.5
+    blur_radius: 20
+
+  # Gaze Path
+  gaze_path:
+    line_color: [0, 255, 0]
+    line_thickness: 2
+    arrow_size: 10
+    show_fixation_points: true
+    fixation_radius: 5
+
+  # Risk Zones
+  risk_zones:
+    colors:
+      low: [0, 255, 0, 100]      # Green
+      medium: [255, 255, 0, 120]  # Yellow
+      high: [255, 165, 0, 150]    # Orange
+      critical: [255, 0, 0, 180]  # Red
+    border_thickness: 3
+
+  # Annotations
+  annotations:
+    font_family: "Arial"
+    font_size: 12
+    background_alpha: 0.7
+
+# Report Generation Settings
+report:
+  format: "pdf"  # Options: pdf, html, docx
+  include_sections:
+    - executive_summary
+    - detailed_analysis
+    - risk_assessment
+    - improvement_recommendations
+    - benchmarking
+
+  # Executive Summary
+  executive_summary:
+    max_issues: 5
+    include_score_gauge: true
+    include_comparison_chart: true
+
+  # Detailed Analysis
+  detailed_analysis:
+    include_annotated_images: true
+    include_statistics: true
+    include_heatmaps: true
+
+  # Recommendations
+  recommendations:
+    prioritization_method: "risk_based"
+    max_recommendations: 10
+    include_implementation_difficulty: true
+
+# Performance Settings
+performance:
+  use_gpu: true
+  gpu_memory_fraction: 0.8
+  num_workers: 4
+  batch_size: 8
+  cache_models: true
+  cache_dir: "./models/cache"
+
+# Logging Settings
+logging:
+  level: "INFO"  # Options: DEBUG, INFO, WARNING, ERROR, CRITICAL
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  log_to_file: true
+  log_file: "logs/medical_form_analyzer.log"
+  max_log_size: 10485760  # 10 MB
+  backup_count: 5
+
+# Medical Device Specific Settings
+medical_device:
+  # Regulatory Standards
+  standards:
+    - "ISO 13485:2016"
+    - "FDA 21 CFR Part 820"
+    - "MDSAP"
+    - "EU MDR 2017/745"
+    - "KGMP"
+
+  # Critical Fields (must be present)
+  required_fields:
+    - "product_id"
+    - "lot_number"
+    - "inspector_name"
+    - "inspection_date"
+    - "approval_signature"
+    - "test_results"
+
+  # Device Risk Classes
+  device_risk_class:
+    class_i: 0.5
+    class_ii: 0.7
+    class_iii: 1.0
+
+  # Industry Best Practices
+  best_practices:
+    max_form_pages: 5
+    max_checkboxes_per_page: 30
+    signature_position: "bottom_right"
+    version_control_required: true
+    change_tracking_required: true

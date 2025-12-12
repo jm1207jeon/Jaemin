@@ -1,0 +1,93 @@
+# Core Dependencies
+numpy>=1.24.0
+scipy>=1.10.0
+pandas>=2.0.0
+
+# Image Processing & Computer Vision
+opencv-python>=4.8.0
+Pillow>=10.0.0
+scikit-image>=0.21.0
+
+# Document Analysis & OCR
+layoutparser>=0.3.4
+pytesseract>=0.3.10
+pdf2image>=1.16.3
+python-docx>=1.0.0
+PyPDF2>=3.0.0
+
+# Deep Learning
+torch>=2.0.0
+torchvision>=0.15.0
+transformers>=4.30.0
+
+# Saliency & Attention Models
+# DeepGaze dependencies
+timm>=0.9.0
+einops>=0.6.0
+
+# Machine Learning
+scikit-learn>=1.3.0
+xgboost>=2.0.0
+
+# Visualization
+matplotlib>=3.7.0
+seaborn>=0.12.0
+plotly>=5.14.0
+
+# GUI
+streamlit>=1.28.0
+gradio>=3.50.0
+
+# Web & API
+fastapi>=0.100.0
+uvicorn>=0.23.0
+pydantic>=2.0.0
+
+# Configuration & Logging
+pyyaml>=6.0
+python-dotenv>=1.0.0
+loguru>=0.7.0
+
+# Progress Bars & UI
+tqdm>=4.65.0
+rich>=13.0.0
+
+# Data Validation
+jsonschema>=4.18.0
+
+# Image Augmentation
+albumentations>=1.3.0
+
+# PDF Generation for Reports
+reportlab>=4.0.0
+fpdf2>=2.7.0
+
+# Statistical Analysis
+statsmodels>=0.14.0
+
+# Color Science (for visual contrast analysis)
+colormath>=3.0.0
+
+# Network Graph (for workflow analysis)
+networkx>=3.1
+
+# Optimization
+numba>=0.57.0
+
+# Testing
+pytest>=7.4.0
+pytest-cov>=4.1.0
+pytest-mock>=3.11.0
+
+# Code Quality
+black>=23.0.0
+flake8>=6.0.0
+mypy>=1.4.0
+
+# Documentation
+sphinx>=7.0.0
+sphinx-rtd-theme>=1.3.0
+
+# Jupyter (for examples)
+jupyter>=1.0.0
+ipykernel>=6.25.0
