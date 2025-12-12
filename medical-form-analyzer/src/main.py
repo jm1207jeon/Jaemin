@@ -200,9 +200,32 @@ class MedicalFormAnalyzer:
         if file_ext == '.pdf':
             try:
                 from pdf2image import convert_from_path
+                import platform
+
+                # Try to find poppler path on Windows
+                poppler_path = None
+                if platform.system() == 'Windows':
+                    common_paths = [
+                        r'C:\poppler\Library\bin',
+                        r'C:\Program Files\poppler\Library\bin',
+                        r'C:\poppler-windows\Library\bin',
+                    ]
+                    for path in common_paths:
+                        if Path(path).exists():
+                            poppler_path = path
+                            break
 
                 # Convert first page of PDF to image
-                images = convert_from_path(image_path, first_page=1, last_page=1, dpi=300)
+                if poppler_path:
+                    images = convert_from_path(
+                        image_path,
+                        first_page=1,
+                        last_page=1,
+                        dpi=300,
+                        poppler_path=poppler_path
+                    )
+                else:
+                    images = convert_from_path(image_path, first_page=1, last_page=1, dpi=300)
 
                 if not images:
                     raise ValueError(f"No pages found in PDF: {image_path}")
@@ -215,12 +238,24 @@ class MedicalFormAnalyzer:
 
             except ImportError:
                 raise ImportError(
-                    "pdf2image is required for PDF support. "
+                    "pdf2image is required for PDF support.\n"
                     "Install: pip install pdf2image\n"
                     "Also install Poppler: https://github.com/oschwartz10612/poppler-windows/releases/"
                 )
             except Exception as e:
-                raise ValueError(f"Could not load PDF from {image_path}: {str(e)}")
+                error_msg = str(e)
+                if 'poppler' in error_msg.lower() or 'pdfinfo' in error_msg.lower():
+                    raise ValueError(
+                        f"Poppler is not installed or not in PATH.\n\n"
+                        f"Please install Poppler:\n"
+                        f"1. Download: https://github.com/oschwartz10612/poppler-windows/releases/\n"
+                        f"2. Extract to C:\\poppler\n"
+                        f"3. Add C:\\poppler\\Library\\bin to PATH\n"
+                        f"4. Restart terminal/Streamlit\n\n"
+                        f"Original error: {error_msg}"
+                    )
+                else:
+                    raise ValueError(f"Could not load PDF from {image_path}: {error_msg}")
 
         # Handle DOCX files
         elif file_ext == '.docx':

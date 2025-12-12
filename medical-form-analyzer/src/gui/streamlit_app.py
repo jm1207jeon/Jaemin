@@ -65,8 +65,15 @@ def main():
     )
 
     if uploaded_file is not None:
-        # Save uploaded file temporarily
-        temp_path = f"temp_{uploaded_file.name}"
+        # Save uploaded file temporarily with safe filename
+        import uuid
+        from pathlib import Path
+
+        # Get file extension
+        file_ext = Path(uploaded_file.name).suffix
+        # Create safe filename with UUID
+        safe_filename = f"temp_{uuid.uuid4().hex[:8]}{file_ext}"
+        temp_path = safe_filename
 
         with open(temp_path, 'wb') as f:
             f.write(uploaded_file.read())
@@ -99,6 +106,14 @@ def main():
                 except Exception as e:
                     st.error(f"Error during analysis: {str(e)}")
                     st.exception(e)
+                finally:
+                    # Clean up temporary file
+                    import os
+                    if os.path.exists(temp_path):
+                        try:
+                            os.remove(temp_path)
+                        except:
+                            pass  # Ignore cleanup errors
 
     # Display results if available
     if 'result' in st.session_state:
