@@ -60,8 +60,8 @@ def main():
     # File upload
     st.header("1️⃣ Upload Document")
     uploaded_file = st.file_uploader(
-        "Upload inspection form (PNG, JPG, PDF)",
-        type=['png', 'jpg', 'jpeg', 'pdf']
+        "Upload inspection form (PNG, JPG, PDF, DOCX)",
+        type=['png', 'jpg', 'jpeg', 'pdf', 'docx']
     )
 
     if uploaded_file is not None:
@@ -71,11 +71,17 @@ def main():
         with open(temp_path, 'wb') as f:
             f.write(uploaded_file.read())
 
-        # Display uploaded image
-        image = Image.open(temp_path) if uploaded_file.type != 'application/pdf' else None
-
-        if image:
-            st.image(image, caption="Uploaded Document", use_container_width=True)
+        # Display uploaded image preview
+        try:
+            if uploaded_file.type in ['image/png', 'image/jpeg', 'image/jpg']:
+                image = Image.open(temp_path)
+                st.image(image, caption="Uploaded Document", use_container_width=True)
+            elif uploaded_file.type == 'application/pdf':
+                st.info("📄 PDF file uploaded. Preview will be generated during analysis.")
+            elif uploaded_file.type == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document':
+                st.info("📝 DOCX file uploaded. Will be processed during analysis.")
+        except Exception as e:
+            st.warning(f"Could not preview file: {str(e)}")
 
         # Analysis button
         if st.button("🚀 Start Analysis", type="primary"):
