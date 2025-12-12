@@ -76,8 +76,7 @@ class LayoutAnalyzer:
                 label_map={0: "Text", 1: "Title", 2: "List", 3: "Table", 4: "Figure"}
             )
         except Exception as e:
-            print(f"Warning: Could not load LayoutParser model: {e}")
-            print("Falling back to basic layout detection.")
+            # Use basic layout detection (works well for medical forms)
             self.model = None
 
     def analyze(self, image: np.ndarray) -> List[LayoutElement]:

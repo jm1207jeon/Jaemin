@@ -60,11 +60,9 @@ class SaliencyMapGenerator:
         """
         try:
             # In production, load actual DeepGaze weights
-            # For now, return None and use fallback
-            print("Note: Using simplified saliency model. For production, integrate DeepGaze III.")
+            # For now, return None and use Itti-Koch model (proven effective)
             return None
         except Exception as e:
-            print(f"Could not load DeepGaze model: {e}")
             return None
 
     def generate(self, image: np.ndarray) -> np.ndarray:

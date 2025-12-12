@@ -72,6 +72,11 @@ class MedicalFormAnalyzer:
         # Visualization
         self.overlay_renderer = OverlayRenderer(self.config)
 
+        # Print initialization status (only once)
+        if not hasattr(self.__class__, '_init_message_shown'):
+            print("✓ Medical Form Analyzer initialized")
+            self.__class__._init_message_shown = True
+
     def analyze(self, image_path: str) -> 'AnalysisResult':
         """
         Analyze a medical form document.
