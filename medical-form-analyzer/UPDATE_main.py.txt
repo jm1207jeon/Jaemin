@@ -1,0 +1,91 @@
+    @staticmethod
+    def _load_image(image_path: str) -> np.ndarray:
+        """
+        Load image from file (supports PNG, JPG, PDF, DOCX).
+
+        Args:
+            image_path: Path to image/document file
+
+        Returns:
+            Image as numpy array (BGR format)
+        """
+        from pathlib import Path
+
+        file_path = Path(image_path)
+        file_ext = file_path.suffix.lower()
+
+        # Handle PDF files
+        if file_ext == '.pdf':
+            try:
+                from pdf2image import convert_from_path
+
+                # Convert first page of PDF to image
+                images = convert_from_path(image_path, first_page=1, last_page=1, dpi=300)
+
+                if not images:
+                    raise ValueError(f"No pages found in PDF: {image_path}")
+
+                # Convert PIL Image to numpy array (OpenCV format)
+                pil_image = images[0]
+                image = cv2.cvtColor(np.array(pil_image), cv2.COLOR_RGB2BGR)
+
+                return image
+
+            except ImportError:
+                raise ImportError(
+                    "pdf2image is required for PDF support. "
+                    "Install: pip install pdf2image\n"
+                    "Also install Poppler: https://github.com/oschwartz10612/poppler-windows/releases/"
+                )
+            except Exception as e:
+                raise ValueError(f"Could not load PDF from {image_path}: {str(e)}")
+
+        # Handle DOCX files
+        elif file_ext == '.docx':
+            try:
+                from docx import Document
+                from docx.shared import Inches
+                import tempfile
+
+                # Read DOCX
+                doc = Document(image_path)
+
+                # Create image from document content
+                # Method 1: Try to extract embedded images
+                for rel in doc.part.rels.values():
+                    if "image" in rel.target_ref:
+                        image_data = rel.target_part.blob
+                        nparr = np.frombuffer(image_data, np.uint8)
+                        image = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
+                        if image is not None:
+                            return image
+
+                # Method 2: Convert to PDF then to image (requires additional tools)
+                # For now, raise error with helpful message
+                raise ValueError(
+                    f"DOCX file '{file_path.name}' does not contain extractable images.\n"
+                    "Please convert DOCX to PDF or image format first.\n"
+                    "You can: \n"
+                    "1. Open in Word and 'Save As' → PDF\n"
+                    "2. Use online converter: https://www.ilovepdf.com/word_to_pdf\n"
+                    "3. Print to PDF"
+                )
+
+            except ImportError:
+                raise ImportError(
+                    "python-docx is required for DOCX support. "
+                    "Install: pip install python-docx"
+                )
+            except Exception as e:
+                raise ValueError(f"Could not load DOCX from {image_path}: {str(e)}")
+
+        # Handle regular image files (PNG, JPG, JPEG)
+        else:
+            image = cv2.imread(image_path)
+            if image is None:
+                raise ValueError(
+                    f"Could not load image from {image_path}\n"
+                    f"Supported formats: PNG, JPG, JPEG, PDF\n"
+                    f"Your file: {file_ext}"
+                )
+            return image
