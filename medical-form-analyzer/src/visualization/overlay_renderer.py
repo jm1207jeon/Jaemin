@@ -159,7 +159,7 @@ class OverlayRenderer:
         # Score text
         cv2.putText(dashboard, f"{overall:.0f}",
                    (center[0] - 50, center[1] + 15),
-                   cv2.FONT_HERSHEY_BOLD, 2, (255, 255, 255), 3)
+                   cv2.FONT_HERSHEY_SIMPLEX, 2, (255, 255, 255), 3)
 
         cv2.putText(dashboard, f"Grade: {grade}",
                    (center[0] - 60, center[1] + 150),
