@@ -1,0 +1,105 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="QmsAnalyzer.App.Views.TraceView">
+  <ScrollViewer>
+    <StackPanel Spacing="12">
+      <!-- 헤더 -->
+      <Border Classes="card">
+        <DockPanel>
+          <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+            <Button Content="문서 열기" Command="{Binding Trace.OpenFileCommand}"/>
+            <Button Classes="primary" Content="✓ 검토하기" Command="{Binding Trace.ReviewCommand}"/>
+          </StackPanel>
+          <StackPanel Spacing="3">
+            <TextBlock Classes="h1" Text="{Binding Trace.Title}" TextWrapping="Wrap"/>
+            <TextBlock Classes="dim" Text="{Binding Trace.SubTitle}" TextWrapping="Wrap"
+                       FontFamily="{StaticResource MonoFont}" FontSize="11"/>
+          </StackPanel>
+        </DockPanel>
+      </Border>
+
+      <!-- 추적성 계보 -->
+      <Border Classes="card">
+        <StackPanel Spacing="8">
+          <TextBlock Classes="sect" Text="추적성 계보 — 규격에서 기록까지" Margin="0"/>
+          <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
+            <ItemsControl ItemsSource="{Binding Trace.Lineage}">
+              <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                  <StackPanel Orientation="Horizontal" Spacing="6"/>
+                </ItemsPanelTemplate>
+              </ItemsControl.ItemsPanel>
+              <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                  <StackPanel Orientation="Horizontal" Spacing="6">
+                    <Border Background="{DynamicResource Surface2Brush}"
+                            BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1"
+                            CornerRadius="8" Padding="11,7" MinWidth="110">
+                      <StackPanel Spacing="1">
+                        <TextBlock Text="{Binding Level}" FontSize="10" Foreground="{DynamicResource Ink3Brush}" FontWeight="SemiBold"/>
+                        <TextBlock Text="{Binding Name}" FontSize="12.5" FontWeight="SemiBold"
+                                   Foreground="{DynamicResource InkBrush}" TextWrapping="Wrap" MaxWidth="170"/>
+                        <TextBlock Text="{Binding Sub}" FontSize="10.5" Foreground="{DynamicResource Ink2Brush}"
+                                   FontFamily="{StaticResource MonoFont}"/>
+                      </StackPanel>
+                    </Border>
+                    <TextBlock Text="→" Foreground="{DynamicResource Ink3Brush}" VerticalAlignment="Center"/>
+                  </StackPanel>
+                </DataTemplate>
+              </ItemsControl.ItemTemplate>
+            </ItemsControl>
+          </ScrollViewer>
+        </StackPanel>
+      </Border>
+
+      <!-- 점검 결과 + 영향 분석 -->
+      <Grid ColumnDefinitions="*,12,*">
+        <Border Grid.Column="0" Classes="card">
+          <StackPanel Spacing="8">
+            <TextBlock Classes="h2" Text="정합성 점검 결과"/>
+            <TextBlock Classes="dim" Text="{Binding Trace.ReviewStatus}" TextWrapping="Wrap"/>
+            <ProgressBar IsIndeterminate="True" IsVisible="{Binding Trace.IsReviewing}" Height="4"/>
+            <ItemsControl ItemsSource="{Binding Trace.Findings}">
+              <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                  <Border Background="{DynamicResource Surface2Brush}" CornerRadius="8" Padding="10,8" Margin="0,3">
+                    <DockPanel>
+                      <TextBlock DockPanel.Dock="Left" Text="{Binding Icon}" FontWeight="Bold" Width="20"
+                                 Foreground="{DynamicResource Ink2Brush}"/>
+                      <StackPanel Spacing="2">
+                        <TextBlock Text="{Binding Title}" FontWeight="SemiBold" FontSize="12.5"
+                                   Foreground="{DynamicResource InkBrush}"/>
+                        <TextBlock Text="{Binding Detail}" FontSize="11.5" TextWrapping="Wrap"
+                                   Foreground="{DynamicResource Ink2Brush}"/>
+                      </StackPanel>
+                    </DockPanel>
+                  </Border>
+                </DataTemplate>
+              </ItemsControl.ItemTemplate>
+            </ItemsControl>
+          </StackPanel>
+        </Border>
+
+        <Border Grid.Column="2" Classes="card">
+          <StackPanel Spacing="8">
+            <TextBlock Classes="h2" Text="영향 분석 — 개정 시 동반 산출물"/>
+            <TextBlock Classes="dim" Text="변경 유형에 따라 규칙 엔진이 자동 생성한 체크리스트"/>
+            <ItemsControl ItemsSource="{Binding Trace.Impacts}">
+              <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                  <Border Background="{DynamicResource Surface2Brush}" CornerRadius="8" Padding="10,6" Margin="0,3">
+                    <DockPanel>
+                      <TextBlock DockPanel.Dock="Right" Text="{Binding Basis}" FontSize="11"
+                                 Foreground="{DynamicResource Ink3Brush}" VerticalAlignment="Center"/>
+                      <CheckBox IsChecked="{Binding Done}" Content="{Binding Action}" FontSize="12.5"/>
+                    </DockPanel>
+                  </Border>
+                </DataTemplate>
+              </ItemsControl.ItemTemplate>
+            </ItemsControl>
+          </StackPanel>
+        </Border>
+      </Grid>
+    </StackPanel>
+  </ScrollViewer>
+</UserControl>

@@ -1,0 +1,107 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="QmsAnalyzer.App.Views.DashboardView">
+  <ScrollViewer>
+    <StackPanel Spacing="12">
+      <!-- 지표 타일 -->
+      <ItemsControl ItemsSource="{Binding Dashboard.Tiles}">
+        <ItemsControl.ItemsPanel>
+          <ItemsPanelTemplate>
+            <UniformGrid Columns="4"/>
+          </ItemsPanelTemplate>
+        </ItemsControl.ItemsPanel>
+        <ItemsControl.ItemTemplate>
+          <DataTemplate>
+            <Border Classes="card" Margin="0,0,10,0">
+              <StackPanel Spacing="2">
+                <TextBlock Text="{Binding Value}" FontSize="24" FontWeight="Bold"
+                           Foreground="{DynamicResource InkBrush}"/>
+                <TextBlock Text="{Binding Label}" Classes="dim"/>
+              </StackPanel>
+            </Border>
+          </DataTemplate>
+        </ItemsControl.ItemTemplate>
+      </ItemsControl>
+
+      <Grid ColumnDefinitions="*,12,*">
+        <Border Grid.Column="0" Classes="card">
+          <StackPanel Spacing="8">
+            <TextBlock Classes="h2" Text="문서 타입 분포"/>
+            <ItemsControl ItemsSource="{Binding Dashboard.TypeBars}">
+              <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                  <Grid ColumnDefinitions="95,*,40" Margin="0,3">
+                    <TextBlock Grid.Column="0" Text="{Binding Label}" Classes="dim" VerticalAlignment="Center"/>
+                    <Border Grid.Column="1" Height="14" CornerRadius="4"
+                            Background="{DynamicResource Surface2Brush}">
+                      <Border Background="{DynamicResource AccentBrush}" CornerRadius="4"
+                              HorizontalAlignment="Left" Width="{Binding Width}"/>
+                    </Border>
+                    <TextBlock Grid.Column="2" Text="{Binding Count}" Classes="dim"
+                               HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                  </Grid>
+                </DataTemplate>
+              </ItemsControl.ItemTemplate>
+            </ItemsControl>
+          </StackPanel>
+        </Border>
+
+        <Border Grid.Column="2" Classes="card">
+          <StackPanel Spacing="8">
+            <TextBlock Classes="h2" Text="규격·규제 커버리지 (연결 문서 수)"/>
+            <ItemsControl ItemsSource="{Binding Dashboard.CoverageBars}">
+              <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                  <Grid ColumnDefinitions="150,*,40" Margin="0,3">
+                    <TextBlock Grid.Column="0" Text="{Binding Label}" Classes="dim"
+                               VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
+                    <Border Grid.Column="1" Height="14" CornerRadius="4"
+                            Background="{DynamicResource Surface2Brush}">
+                      <Border Background="{DynamicResource AccentBrush}" CornerRadius="4"
+                              HorizontalAlignment="Left" Width="{Binding Width}"/>
+                    </Border>
+                    <TextBlock Grid.Column="2" Text="{Binding Count}" Classes="dim"
+                               HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                  </Grid>
+                </DataTemplate>
+              </ItemsControl.ItemTemplate>
+            </ItemsControl>
+          </StackPanel>
+        </Border>
+      </Grid>
+
+      <Border Classes="card">
+        <StackPanel Spacing="8">
+          <TextBlock Classes="h2" Text="갭 · 무결성 경고"/>
+          <ItemsControl ItemsSource="{Binding Dashboard.Warnings}">
+            <ItemsControl.ItemTemplate>
+              <DataTemplate>
+                <Border Background="{DynamicResource Surface2Brush}" CornerRadius="8" Padding="10,7" Margin="0,3">
+                  <StackPanel Spacing="1">
+                    <TextBlock Text="{Binding Title}" FontWeight="SemiBold" FontSize="12.5"
+                               Foreground="{DynamicResource CritBrush}"/>
+                    <TextBlock Text="{Binding Detail}" FontSize="11.5" Classes="dim" TextWrapping="Wrap"/>
+                  </StackPanel>
+                </Border>
+              </DataTemplate>
+            </ItemsControl.ItemTemplate>
+          </ItemsControl>
+        </StackPanel>
+      </Border>
+
+      <Border Classes="card">
+        <StackPanel Spacing="6">
+          <TextBlock Classes="h2" Text="감사 추적 (최근 활동)"/>
+          <ItemsControl ItemsSource="{Binding Dashboard.AuditTail}">
+            <ItemsControl.ItemTemplate>
+              <DataTemplate>
+                <TextBlock Text="{Binding}" FontSize="10.5" FontFamily="{StaticResource MonoFont}"
+                           Foreground="{DynamicResource Ink3Brush}" TextTrimming="CharacterEllipsis"/>
+              </DataTemplate>
+            </ItemsControl.ItemTemplate>
+          </ItemsControl>
+        </StackPanel>
+      </Border>
+    </StackPanel>
+  </ScrollViewer>
+</UserControl>

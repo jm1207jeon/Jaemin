@@ -1,0 +1,150 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <!--
+    디자인 토큰 — 패밀리 룩 교체 시 이 파일만 수정하면 전체 앱에 반영된다.
+    라이트/다크는 ThemeDictionaries로 전환.
+  -->
+  <Styles.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.ThemeDictionaries>
+        <ResourceDictionary x:Key="Light">
+          <Color x:Key="GroundColor">#EEF1F4</Color>
+          <Color x:Key="SurfaceColor">#FFFFFF</Color>
+          <Color x:Key="Surface2Color">#F6F8FA</Color>
+          <Color x:Key="InkColor">#1A2430</Color>
+          <Color x:Key="Ink2Color">#5A6876</Color>
+          <Color x:Key="Ink3Color">#8B97A3</Color>
+          <Color x:Key="EdgeLineColor">#94A3B0</Color>
+          <Color x:Key="BorderColor">#DDE3E9</Color>
+          <Color x:Key="AccentColor">#17627A</Color>
+          <Color x:Key="AccentInkColor">#FFFFFF</Color>
+          <Color x:Key="GoodColor">#008300</Color>
+          <Color x:Key="WarnColor">#C98500</Color>
+          <Color x:Key="CritColor">#C73A39</Color>
+          <Color x:Key="TypeManualColor">#2A78D6</Color>
+          <Color x:Key="TypeProcedureColor">#1BAF7A</Color>
+          <Color x:Key="TypeSopColor">#4A3AA7</Color>
+          <Color x:Key="TypeWorkStdColor">#E87BA4</Color>
+          <Color x:Key="TypeFormColor">#EDA100</Color>
+          <Color x:Key="TypeStandardColor">#008300</Color>
+          <Color x:Key="TypeRegulationColor">#E34948</Color>
+          <Color x:Key="TypeTechDocColor">#EB6834</Color>
+        </ResourceDictionary>
+        <ResourceDictionary x:Key="Dark">
+          <Color x:Key="GroundColor">#10161D</Color>
+          <Color x:Key="SurfaceColor">#1A222B</Color>
+          <Color x:Key="Surface2Color">#202A34</Color>
+          <Color x:Key="InkColor">#E8EDF2</Color>
+          <Color x:Key="Ink2Color">#9AA7B4</Color>
+          <Color x:Key="Ink3Color">#6D7A87</Color>
+          <Color x:Key="EdgeLineColor">#55636F</Color>
+          <Color x:Key="BorderColor">#2B3641</Color>
+          <Color x:Key="AccentColor">#4FA3BD</Color>
+          <Color x:Key="AccentInkColor">#0D1319</Color>
+          <Color x:Key="GoodColor">#4CAF50</Color>
+          <Color x:Key="WarnColor">#C98500</Color>
+          <Color x:Key="CritColor">#E66767</Color>
+          <Color x:Key="TypeManualColor">#3987E5</Color>
+          <Color x:Key="TypeProcedureColor">#199E70</Color>
+          <Color x:Key="TypeSopColor">#9085E9</Color>
+          <Color x:Key="TypeWorkStdColor">#D55181</Color>
+          <Color x:Key="TypeFormColor">#C98500</Color>
+          <Color x:Key="TypeStandardColor">#4CAF50</Color>
+          <Color x:Key="TypeRegulationColor">#E66767</Color>
+          <Color x:Key="TypeTechDocColor">#D95926</Color>
+        </ResourceDictionary>
+      </ResourceDictionary.ThemeDictionaries>
+
+      <SolidColorBrush x:Key="GroundBrush" Color="{DynamicResource GroundColor}"/>
+      <SolidColorBrush x:Key="SurfaceBrush" Color="{DynamicResource SurfaceColor}"/>
+      <SolidColorBrush x:Key="Surface2Brush" Color="{DynamicResource Surface2Color}"/>
+      <SolidColorBrush x:Key="InkBrush" Color="{DynamicResource InkColor}"/>
+      <SolidColorBrush x:Key="Ink2Brush" Color="{DynamicResource Ink2Color}"/>
+      <SolidColorBrush x:Key="Ink3Brush" Color="{DynamicResource Ink3Color}"/>
+      <SolidColorBrush x:Key="BorderBrush" Color="{DynamicResource BorderColor}"/>
+      <SolidColorBrush x:Key="AccentBrush" Color="{DynamicResource AccentColor}"/>
+      <SolidColorBrush x:Key="AccentInkBrush" Color="{DynamicResource AccentInkColor}"/>
+      <SolidColorBrush x:Key="GoodBrush" Color="{DynamicResource GoodColor}"/>
+      <SolidColorBrush x:Key="WarnBrush" Color="{DynamicResource WarnColor}"/>
+      <SolidColorBrush x:Key="CritBrush" Color="{DynamicResource CritColor}"/>
+
+      <FontFamily x:Key="AppFont">Malgun Gothic, Apple SD Gothic Neo, Noto Sans CJK KR, Noto Sans KR, Inter, sans-serif</FontFamily>
+      <FontFamily x:Key="MonoFont">Cascadia Mono, Consolas, D2Coding, monospace</FontFamily>
+    </ResourceDictionary>
+  </Styles.Resources>
+
+  <!-- 공통 카드 스타일 -->
+  <Style Selector="Border.card">
+    <Setter Property="Background" Value="{DynamicResource SurfaceBrush}"/>
+    <Setter Property="BorderBrush" Value="{DynamicResource BorderBrush}"/>
+    <Setter Property="BorderThickness" Value="1"/>
+    <Setter Property="CornerRadius" Value="10"/>
+    <Setter Property="Padding" Value="14"/>
+  </Style>
+
+  <Style Selector="TextBlock.h1">
+    <Setter Property="FontSize" Value="18"/>
+    <Setter Property="FontWeight" Value="Bold"/>
+    <Setter Property="Foreground" Value="{DynamicResource InkBrush}"/>
+  </Style>
+  <Style Selector="TextBlock.h2">
+    <Setter Property="FontSize" Value="14"/>
+    <Setter Property="FontWeight" Value="SemiBold"/>
+    <Setter Property="Foreground" Value="{DynamicResource InkBrush}"/>
+  </Style>
+  <Style Selector="TextBlock.dim">
+    <Setter Property="Foreground" Value="{DynamicResource Ink2Brush}"/>
+    <Setter Property="FontSize" Value="12"/>
+  </Style>
+  <Style Selector="TextBlock.sect">
+    <Setter Property="Foreground" Value="{DynamicResource Ink3Brush}"/>
+    <Setter Property="FontSize" Value="11"/>
+    <Setter Property="FontWeight" Value="SemiBold"/>
+    <Setter Property="Margin" Value="0,10,0,4"/>
+  </Style>
+
+  <Style Selector="Button.primary">
+    <Setter Property="Background" Value="{DynamicResource AccentBrush}"/>
+    <Setter Property="Foreground" Value="{DynamicResource AccentInkBrush}"/>
+    <Setter Property="FontWeight" Value="SemiBold"/>
+    <Setter Property="CornerRadius" Value="8"/>
+    <Setter Property="Padding" Value="14,7"/>
+  </Style>
+  <Style Selector="Button.primary:pointerover /template/ ContentPresenter">
+    <Setter Property="Background" Value="{DynamicResource AccentBrush}"/>
+    <Setter Property="Opacity" Value="0.9"/>
+  </Style>
+
+  <!-- 좌측 네비게이션 버튼 -->
+  <Style Selector="RadioButton.nav">
+    <Setter Property="Padding" Value="12,9"/>
+    <Setter Property="HorizontalAlignment" Value="Stretch"/>
+    <Setter Property="HorizontalContentAlignment" Value="Left"/>
+    <Setter Property="CornerRadius" Value="8"/>
+    <Setter Property="FontSize" Value="13"/>
+    <Setter Property="Foreground" Value="{DynamicResource Ink2Brush}"/>
+    <Setter Property="Template">
+      <ControlTemplate>
+        <Border Name="PART_Root"
+                Background="Transparent"
+                CornerRadius="{TemplateBinding CornerRadius}"
+                Padding="{TemplateBinding Padding}">
+          <ContentPresenter Content="{TemplateBinding Content}"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            TextElement.Foreground="{TemplateBinding Foreground}"/>
+        </Border>
+      </ControlTemplate>
+    </Setter>
+  </Style>
+  <Style Selector="RadioButton.nav:pointerover /template/ Border#PART_Root">
+    <Setter Property="Background" Value="{DynamicResource Surface2Brush}"/>
+  </Style>
+  <Style Selector="RadioButton.nav:checked /template/ Border#PART_Root">
+    <Setter Property="Background" Value="{DynamicResource AccentBrush}"/>
+  </Style>
+  <Style Selector="RadioButton.nav:checked">
+    <Setter Property="Foreground" Value="{DynamicResource AccentInkBrush}"/>
+    <Setter Property="FontWeight" Value="SemiBold"/>
+  </Style>
+</Styles>

@@ -1,0 +1,47 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:controls="clr-namespace:QmsAnalyzer.App.Controls"
+             x:Class="QmsAnalyzer.App.Views.GraphView">
+  <Grid ColumnDefinitions="*,12,300">
+    <Border Grid.Column="0" Classes="card" Padding="0">
+      <DockPanel>
+        <Border DockPanel.Dock="Top" Padding="12,9" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,0,0,1">
+          <StackPanel Orientation="Horizontal" Spacing="12">
+            <TextBlock Classes="dim" Text="레이어" VerticalAlignment="Center" FontWeight="SemiBold"/>
+            <CheckBox Content="절차서" IsChecked="{Binding Graph.ShowProcedures}"/>
+            <CheckBox Content="지침·작업표준" IsChecked="{Binding Graph.ShowSops}"/>
+            <CheckBox Content="양식" IsChecked="{Binding Graph.ShowForms}"/>
+            <CheckBox Content="규격·규제" IsChecked="{Binding Graph.ShowExternals}"/>
+            <CheckBox Content="기술문서" IsChecked="{Binding Graph.ShowTechDocs}"/>
+            <TextBlock Classes="dim" Text="드래그 = 이동 · 휠 = 줌 · 클릭 = 선택" VerticalAlignment="Center"/>
+          </StackPanel>
+        </Border>
+        <controls:NetworkGraphControl x:Name="Graph"/>
+      </DockPanel>
+    </Border>
+
+    <Border Grid.Column="2" Classes="card">
+      <ScrollViewer>
+        <StackPanel Spacing="6">
+          <TextBlock Classes="dim" Text="{Binding Graph.SelectedId}" FontFamily="{StaticResource MonoFont}"/>
+          <TextBlock Classes="h2" Text="{Binding Graph.SelectedTitle}" TextWrapping="Wrap"/>
+          <TextBlock Classes="dim" Text="{Binding Graph.SelectedSub}" TextWrapping="Wrap"/>
+          <TextBlock Classes="sect" Text="연결"/>
+          <ItemsControl ItemsSource="{Binding Graph.Neighbors}">
+            <ItemsControl.ItemTemplate>
+              <DataTemplate>
+                <DockPanel Margin="0,3">
+                  <TextBlock DockPanel.Dock="Right" Classes="dim" Text="{Binding EdgeLabel}"
+                             FontSize="11" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" MaxWidth="110"/>
+                  <TextBlock Text="{Binding Name}" FontSize="12.5"
+                             Foreground="{DynamicResource InkBrush}"
+                             TextTrimming="CharacterEllipsis"/>
+                </DockPanel>
+              </DataTemplate>
+            </ItemsControl.ItemTemplate>
+          </ItemsControl>
+        </StackPanel>
+      </ScrollViewer>
+    </Border>
+  </Grid>
+</UserControl>
