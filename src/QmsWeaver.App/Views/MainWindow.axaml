@@ -1,0 +1,61 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="QmsWeaver.App.Views.MainWindow"
+        Title="QMS Weaver"
+        Width="1360" Height="860"
+        WindowStartupLocation="CenterScreen"
+        Background="{DynamicResource GroundBrush}"
+        FontFamily="{StaticResource AppFont}">
+  <DockPanel>
+    <!-- 상단 앱바 -->
+    <Border DockPanel.Dock="Top" Background="{DynamicResource SurfaceBrush}"
+            BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,0,0,1" Padding="16,0" Height="52">
+      <DockPanel VerticalAlignment="Center">
+        <StackPanel Orientation="Horizontal" Spacing="10" VerticalAlignment="Center">
+          <Border Background="{DynamicResource AccentBrush}" CornerRadius="7" Width="26" Height="26">
+            <TextBlock Text="Q" FontWeight="Bold" Foreground="{DynamicResource AccentInkBrush}"
+                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
+          </Border>
+          <TextBlock Text="QMS Weaver" FontWeight="Bold" FontSize="15"
+                     Foreground="{DynamicResource InkBrush}" VerticalAlignment="Center"/>
+        </StackPanel>
+        <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" Spacing="8"
+                    HorizontalAlignment="Right" VerticalAlignment="Center">
+          <TextBox x:Name="GlobalSearch" Width="250" Watermark="전체 검색 — 문서번호·이름 (Enter)"
+                   FontSize="12.5" KeyDown="OnGlobalSearchKeyDown"/>
+          <TextBlock x:Name="AiBadge" Text="AI 미연결" FontSize="11.5"
+                     Foreground="{DynamicResource Ink3Brush}" VerticalAlignment="Center"/>
+          <Button x:Name="ThemeButton" Content="◐" Width="32" Height="32" Padding="0"
+                  HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                  Click="OnThemeToggle" ToolTip.Tip="라이트/다크 전환"/>
+        </StackPanel>
+        <Panel/>
+      </DockPanel>
+    </Border>
+
+    <!-- 좌측 네비게이션 -->
+    <Border DockPanel.Dock="Left" Background="{DynamicResource SurfaceBrush}"
+            BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,0,1,0" Width="196" Padding="10,12">
+      <StackPanel Spacing="4">
+        <RadioButton Classes="nav" GroupName="nav" Content="⌂  시작" Tag="home" IsChecked="True" IsCheckedChanged="OnNavChecked"/>
+        <RadioButton Classes="nav" GroupName="nav" Content="▤  문서 라이브러리" Tag="library" IsCheckedChanged="OnNavChecked"/>
+        <RadioButton Classes="nav" GroupName="nav" Content="◉  네트워크 그래프" Tag="graph" IsCheckedChanged="OnNavChecked"/>
+        <RadioButton Classes="nav" GroupName="nav" Content="▥  기록 탐색" Tag="drill" IsCheckedChanged="OnNavChecked"/>
+        <RadioButton Classes="nav" GroupName="nav" Content="⇢  역추적 · 검토" Tag="trace" IsCheckedChanged="OnNavChecked"/>
+        <RadioButton Classes="nav" GroupName="nav" Content="▦  심사 대비 대시보드" Tag="dashboard" IsCheckedChanged="OnNavChecked"/>
+        <TextBlock Classes="sect" Text="시스템" Margin="12,16,0,4"/>
+        <RadioButton Classes="nav" GroupName="nav" Content="⚙  설정 · 폴더 · AI" Tag="settings" IsCheckedChanged="OnNavChecked"/>
+      </StackPanel>
+    </Border>
+
+    <!-- 하단 상태바 -->
+    <Border DockPanel.Dock="Bottom" Background="{DynamicResource SurfaceBrush}"
+            BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,1,0,0" Padding="16,4">
+      <TextBlock Text="{Binding StatusBarText}" FontSize="11.5"
+                 Foreground="{DynamicResource Ink2Brush}"/>
+    </Border>
+
+    <!-- 콘텐츠 -->
+    <ContentControl x:Name="Host" Margin="14"/>
+  </DockPanel>
+</Window>

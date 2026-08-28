@@ -1,0 +1,63 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="QmsWeaver.App.Views.HomeView">
+  <ScrollViewer>
+    <StackPanel Spacing="14" MaxWidth="980" HorizontalAlignment="Center" Margin="0,18,0,0">
+      <StackPanel Spacing="4">
+        <TextBlock Text="QMS Weaver" FontSize="24" FontWeight="Bold"
+                   Foreground="{DynamicResource InkBrush}" HorizontalAlignment="Center"/>
+        <TextBlock Text="무엇을 하시겠습니까?" FontSize="14"
+                   Foreground="{DynamicResource Ink2Brush}" HorizontalAlignment="Center"/>
+        <TextBlock Text="{Binding Home.StatusLine}" FontSize="12"
+                   Foreground="{DynamicResource Ink3Brush}" HorizontalAlignment="Center" Margin="0,4,0,0"/>
+      </StackPanel>
+
+      <!-- 과업 타일 (123Scan 스타일: 큰 아이콘 + 과업명 + 설명) -->
+      <ItemsControl ItemsSource="{Binding Home.Tiles}">
+        <ItemsControl.ItemsPanel>
+          <ItemsPanelTemplate>
+            <UniformGrid Columns="2"/>
+          </ItemsPanelTemplate>
+        </ItemsControl.ItemsPanel>
+        <ItemsControl.ItemTemplate>
+          <DataTemplate>
+            <Button Margin="6" Padding="0" HorizontalAlignment="Stretch"
+                    HorizontalContentAlignment="Stretch" Background="Transparent"
+                    BorderThickness="0" Click="OnTileClick" Tag="{Binding Section}">
+              <Border Classes="card" Padding="16,14">
+                <DockPanel>
+                  <TextBlock DockPanel.Dock="Left" Text="{Binding Icon}" FontSize="26"
+                             VerticalAlignment="Center" Margin="0,0,14,0"/>
+                  <StackPanel Spacing="2">
+                    <DockPanel>
+                      <TextBlock DockPanel.Dock="Right" Text="{Binding Roles}" FontSize="10.5"
+                                 Foreground="{DynamicResource Ink3Brush}" VerticalAlignment="Center"/>
+                      <TextBlock Text="{Binding Title}" FontSize="14.5" FontWeight="SemiBold"
+                                 Foreground="{DynamicResource InkBrush}"/>
+                    </DockPanel>
+                    <TextBlock Text="{Binding Desc}" FontSize="12"
+                               Foreground="{DynamicResource Ink2Brush}" TextWrapping="Wrap"/>
+                  </StackPanel>
+                </DockPanel>
+              </Border>
+            </Button>
+          </DataTemplate>
+        </ItemsControl.ItemTemplate>
+      </ItemsControl>
+
+      <Border Classes="card" Margin="6,0">
+        <StackPanel Spacing="5">
+          <TextBlock Classes="sect" Text="최근 활동" Margin="0"/>
+          <ItemsControl ItemsSource="{Binding Home.Recent}">
+            <ItemsControl.ItemTemplate>
+              <DataTemplate>
+                <TextBlock Text="{Binding}" FontSize="10.5" FontFamily="{StaticResource MonoFont}"
+                           Foreground="{DynamicResource Ink3Brush}" TextTrimming="CharacterEllipsis"/>
+              </DataTemplate>
+            </ItemsControl.ItemTemplate>
+          </ItemsControl>
+        </StackPanel>
+      </Border>
+    </StackPanel>
+  </ScrollViewer>
+</UserControl>

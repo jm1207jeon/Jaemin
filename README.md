@@ -1,4 +1,4 @@
-# QMS Document Analyzer
+# QMS Weaver
 
 의료기기 QMS(품질경영시스템) 문서 체계를 네트워크로 관리·탐색·검증하는 **C# 데스크톱 애플리케이션**입니다.
 문서 등록 이력 대장(F401-09)에서 생성한 문서 네트워크(품질매뉴얼 → 절차서 → 지침/작업표준 → 양식)를 기반으로,
@@ -8,12 +8,25 @@
 
 | 화면 | 기능 |
 |---|---|
-| **문서 라이브러리** | 등록 문서 377건(+외부 규격·규제·파생 기술문서) 검색·필터, Rev/적용일/관리부서/기록 수 |
-| **네트워크 그래프** | Force-directed 문서 관계 그래프. 레이어 토글(절차서/지침/양식/규격·규제/기술문서), 드래그·줌·클릭 선택, 이웃 강조, 우측 상세 패널 |
+| **시작(홈)** | 과업 중심 타일 — 부서·직책별 주요 과업(문서 찾기·지도·기록·검토·심사 대비·설정)으로 1클릭 진입, 상태 요약·최근 활동 |
+| **문서 라이브러리** | 등록 문서 377건(+외부 규격·규제·파생 기술문서) 검색·필터, Rev/적용일/관리부서/기록 수, CSV 내보내기 |
+| **네트워크 그래프** | Force-directed 문서 관계 그래프. ISO 조항별 결정적 초기 배치(멘탈맵 안정), 노드 검색·센터링, 전체 보기(fit), 레이아웃 고정, 범례(카운트), 시맨틱 줌 라벨, 레이어 토글, 이웃 강조, 호버 프리뷰 |
 | **기록 탐색** | 좌→우 Miller Columns 드릴다운: 절차서 → 그룹 → 실행 단위 → 기록 테이블(Rev·수행일·작성/검토/승인·상태) |
 | **역추적 · 검토** | 기록 → 양식 → 절차서 → 매뉴얼 → 규격의 추적성 계보, **[검토하기]** 정합성 점검(인용 Rev 불일치·서명 완결성·수행 주기 등), 개정 영향 체크리스트 자동 생성 |
-| **심사 대비 대시보드** | 타입 분포, 규격·규제 커버리지, 갭·무결성 경고, 감사 추적(audit trail) |
+| **심사 대비 대시보드** | 타입 분포, 규격·규제 커버리지, 갭·무결성 경고, **정기검토 도래(적용 3년 경과)**, 감사 추적(audit trail) |
 | **설정** | 폴더 연결(통합 루트 + 노드별 지정), Claude API 연결(AI 문안 대조·요약) |
+
+상단 헤더의 **전역 검색**은 문서번호/이름을 그래프 위치로, 그 외 검색어는 라이브러리 필터로 연결합니다.
+하단 상태바는 문서·기록·폴더·AI 연결 상태를 상시 표시합니다.
+
+### UI/UX 설계 근거 (HFE)
+
+- **Overview first, zoom & filter, details-on-demand** (Shneiderman, 1996) — 초기 전체 보기 → 레이어 필터·검색 → 우측 상세 패널
+- **멘탈맵 보존** — 결정적 초기 배치(ISO 조항 섹터), 필터 변경 시 위치 유지, 레이아웃 고정 토글, 시뮬레이션 자동 정지
+- **색상 단독 의존 금지** — 타입 색 + 상시 라벨 + 카운트 범례 병기
+- **오류 방지** — 숨긴 레이어의 노드 검색 시 레이어 자동 활성, 빈 상태에 다음 행동 CTA, 잘못된 경로/문서번호 즉시 피드백
+- **과업 중심 진입** (Zebra 123Scan 스타일) — 시작 화면 타일로 부서별 주 과업에 1클릭 도달
+- 다부서·다직급 **시나리오 시뮬레이션 320개 여정**(tests/SimulationTests.cs)이 CI에서 상시 회귀 검증
 
 ### 규제 커버리지
 
@@ -31,27 +44,27 @@ ISO 13485, KGMP(MFDS), MDSAP(미국·캐나다·브라질·호주·일본), FDA 
 설정에서 Anthropic API 키를 입력하면 활성화됩니다 (미입력 시 규칙 기반 로컬 분석만 동작):
 - **검토하기 보강**: 기록 본문 vs 상위 절차·지침 문안 대조 (판정기준·수치·요구항목)
 - **문서 요약**
-- 키는 이 PC의 로컬 설정 파일(`%AppData%/QmsAnalyzer/config.json`)에만 저장됩니다.
+- 키는 이 PC의 로컬 설정 파일(`%AppData%/QmsWeaver/config.json`)에만 저장됩니다.
 
 ## 실행
 
 ### 배포본 (권장)
 GitHub Actions가 커밋마다 자동 빌드합니다:
-- **Actions 탭 → 최신 워크플로 → Artifacts → `QmsAnalyzer-win-x64`** 다운로드 후 `QmsAnalyzer.exe` 실행 (설치 불필요, self-contained)
+- **Actions 탭 → 최신 워크플로 → Artifacts → `QmsWeaver-win-x64`** 다운로드 후 `QmsWeaver.exe` 실행 (설치 불필요, self-contained)
 - `v*` 태그를 푸시하면 GitHub Release가 자동 생성됩니다
 
 ### 소스 빌드
 ```bash
 dotnet build            # 전체 빌드
 dotnet test             # 단위 + 헤드리스 UI 테스트
-dotnet run --project src/QmsAnalyzer.App
+dotnet run --project src/QmsWeaver.App
 ```
 요구사항: .NET 8 SDK. Windows/macOS/Linux 모두 지원(Avalonia).
 
 ## 프로젝트 구조
 
 ```
-src/QmsAnalyzer.Core/        도메인 로직 (UI 독립)
+src/QmsWeaver.Core/        도메인 로직 (UI 독립)
   Models/                    노드·엣지·기록·설정 모델
   Services/
     SeedNetworkService       임베디드 seedNetwork.json 로드·인덱스
@@ -62,7 +75,7 @@ src/QmsAnalyzer.Core/        도메인 로직 (UI 독립)
     TextExtractService       docx/xlsx/txt 본문 추출
     XlsxImportService        문서 등록 대장(F401-09) 재임포트
     ConfigService/AuditService  로컬 설정 · 감사 추적(JSONL)
-src/QmsAnalyzer.App/         Avalonia UI (뷰 6종 + 커스텀 그래프 컨트롤)
+src/QmsWeaver.App/         Avalonia UI (뷰 6종 + 커스텀 그래프 컨트롤)
   Styles/Tokens.axaml        디자인 토큰 — 룩앤필 교체는 이 파일만 수정
 tests/                       Core 단위 테스트 + 헤드리스 UI 스모크 테스트(스크린샷 캡처)
 tools/build_network.py       문서 등록 대장 xlsx → 네트워크 시드 재생성
@@ -72,7 +85,7 @@ tools/build_network.py       문서 등록 대장 xlsx → 네트워크 시드 �
 
 문서 등록 이력 대장이 개정되면:
 ```bash
-python3 tools/build_network.py <문서등록이력대장.xlsx> src/QmsAnalyzer.Core/Assets/seedNetwork.json
+python3 tools/build_network.py <문서등록이력대장.xlsx> src/QmsWeaver.Core/Assets/seedNetwork.json
 dotnet build
 ```
 
