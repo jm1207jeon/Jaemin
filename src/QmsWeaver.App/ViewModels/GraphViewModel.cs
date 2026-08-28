@@ -111,11 +111,11 @@ public partial class GraphViewModel : ObservableObject
         return node.Id;
     }
 
-    partial void OnShowProceduresChanged(bool v) => OnFilterChanged();
-    partial void OnShowSopsChanged(bool v) => OnFilterChanged();
-    partial void OnShowFormsChanged(bool v) => OnFilterChanged();
-    partial void OnShowExternalsChanged(bool v) => OnFilterChanged();
-    partial void OnShowTechDocsChanged(bool v) => OnFilterChanged();
+    partial void OnShowProceduresChanged(bool value) => OnFilterChanged();
+    partial void OnShowSopsChanged(bool value) => OnFilterChanged();
+    partial void OnShowFormsChanged(bool value) => OnFilterChanged();
+    partial void OnShowExternalsChanged(bool value) => OnFilterChanged();
+    partial void OnShowTechDocsChanged(bool value) => OnFilterChanged();
 
     private void OnFilterChanged()
     {

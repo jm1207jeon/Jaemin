@@ -127,8 +127,9 @@ public class SimulationTests
             {
                 var services = new AppServices(configDir);
                 var vm = new MainViewModel(services);
+                // 주의: Show() 하지 않음 — VM·화면전환 로직 검증에 렌더링은 불필요하며,
+                // CI의 소프트웨어 렌더러에서 320개 여정 × 매 프레임 렌더가 45분 병목이 됐음.
                 var window = new MainWindow { DataContext = vm };
-                window.Show();
                 Pump();
 
                 if (kind != "none")
@@ -153,7 +154,6 @@ public class SimulationTests
                     }
                 }
 
-                window.Close();
                 Pump();
             }
             finally
