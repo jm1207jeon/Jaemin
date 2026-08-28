@@ -23,6 +23,11 @@ public sealed class RecordRow
     public string Reviewer => Entry.Reviewer ?? "—";
     public string Approver => Entry.Approver ?? "—";
     public string Status => Entry.Status.Label();
+    /// <summary>개정본 상태: 최신본 = "현행", 이전 개정본 = "구버전" (조회는 계속 가능).</summary>
+    public string Version => Entry.IsCurrent ? "현행" : "구버전";
+    public bool IsCurrent => Entry.IsCurrent;
+    /// <summary>대표 형식 + 병존 형식 (예: "DOCX (+PDF)" = docx 우선 선택됨).</summary>
+    public string Format => Entry.FormatDisplay;
 }
 
 /// <summary>기록 탐색 — 좌→우 Miller Columns: 절차서 → 그룹 → 실행단위 → 기록 테이블.</summary>

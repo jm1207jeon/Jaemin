@@ -14,6 +14,7 @@ public partial class MainWindow : Window
     public MainWindow()
     {
         InitializeComponent();
+        Opened += async (_, _) => await ShowOnboardingIfFirstRunAsync();
         DataContextChanged += (_, _) =>
         {
             if (Vm is null) return;
@@ -26,9 +27,39 @@ public partial class MainWindow : Window
             _views["dashboard"] = new DashboardView { DataContext = Vm };
             _views["settings"] = new SettingsView { DataContext = Vm };
             Vm.SectionChanged += ShowSection;
+            Vm.Settings.UiPrefsChanged += () =>
+            {
+                FontSize = Vm.Services.Config.Config.UiFontSize;
+                if (Avalonia.Application.Current is { } app)
+                    app.Resources["TableRowHeight"] = Vm.Services.Config.Config.TableRowHeight;
+            };
             ShowSection(Vm.Section);
             UpdateAiBadge();
         };
+    }
+
+    /// <summary>
+    /// 최초 실행: ISO 13485 기본 구조 안내 + QMS 폴더 연결 제안.
+    /// 예 → 네이티브 폴더 선택 → 바인딩 저장 → 즉시 스캔 → 기록 탐색으로 이동.
+    /// </summary>
+    private async Task ShowOnboardingIfFirstRunAsync()
+    {
+        if (Vm is null || Vm.Services.Config.Config.OnboardingShown) return;
+        Vm.Services.Config.Config.OnboardingShown = true;
+        Vm.Services.Config.Save();
+
+        var dialog = new OnboardingDialog();
+        await dialog.ShowDialog(this);
+
+        if (dialog.PickedFolder is { } path)
+        {
+            Vm.Services.Config.Config.FolderBindings.Add(
+                new Core.Models.FolderBinding { Path = path });
+            Vm.Services.Config.Save();
+            Vm.Services.Audit.Log("onboarding.folder", path);
+            Vm.Section = "drill"; // 스캔 진행과 결과가 바로 보이는 화면으로
+            _ = Vm.Services.RescanAsync();
+        }
     }
 
     private void ShowSection(string section)

@@ -14,7 +14,7 @@
 | **기록 탐색** | 좌→우 Miller Columns 드릴다운: 절차서 → 그룹 → 실행 단위 → 기록 테이블(Rev·수행일·작성/검토/승인·상태) |
 | **역추적 · 검토** | 기록 → 양식 → 절차서 → 매뉴얼 → 규격의 추적성 계보, **[검토하기]** 정합성 점검(인용 Rev 불일치·서명 완결성·수행 주기 등), 개정 영향 체크리스트 자동 생성 |
 | **심사 대비 대시보드** | 타입 분포, 규격·규제 커버리지, 갭·무결성 경고, **정기검토 도래(적용 3년 경과)**, 감사 추적(audit trail) |
-| **설정** | 폴더 연결(통합 루트 + 노드별 지정), Claude API 연결(AI 문안 대조·요약) |
+| **설정** | 폴더 연결(통합 루트 + 노드별 지정), LLM API 연결(AI 문안 대조·요약) |
 
 상단 헤더의 **전역 검색**은 문서번호/이름을 그래프 위치로, 그 외 검색어는 라이브러리 필터로 연결합니다.
 하단 상태바는 문서·기록·폴더·AI 연결 상태를 상시 표시합니다.
@@ -41,7 +41,7 @@ ISO 13485, KGMP(MFDS), MDSAP(미국·캐나다·브라질·호주·일본), FDA 
 
 ### AI 분석 (선택)
 
-설정에서 Anthropic API 키를 입력하면 활성화됩니다 (미입력 시 규칙 기반 로컬 분석만 동작):
+설정에서 LLM API 키를 입력하면 활성화됩니다 (기본 Anthropic API, 호환 엔드포인트 교체 가능) (미입력 시 규칙 기반 로컬 분석만 동작):
 - **검토하기 보강**: 기록 본문 vs 상위 절차·지침 문안 대조 (판정기준·수치·요구항목)
 - **문서 요약**
 - 키는 이 PC의 로컬 설정 파일(`%AppData%/QmsWeaver/config.json`)에만 저장됩니다.
@@ -50,7 +50,8 @@ ISO 13485, KGMP(MFDS), MDSAP(미국·캐나다·브라질·호주·일본), FDA 
 
 ### 배포본 (권장)
 GitHub Actions가 커밋마다 자동 빌드합니다:
-- **Actions 탭 → 최신 워크플로 → Artifacts → `QmsWeaver-win-x64`** 다운로드 후 `QmsWeaver.exe` 실행 (설치 불필요, self-contained)
+- **Actions 탭 → 최신 워크플로 → Artifacts → `QmsWeaver-win-x64`** 다운로드 → 압축 해제 → 폴더 안의 `QmsWeaver.exe` 실행 (설치·별도 런타임 불필요)
+- 배포 폴더는 실행 파일과 모듈별 라이브러리(dll)가 분리된 구조입니다 — 단일 거대 exe가 아니므로 시작이 빠르고 부분 업데이트가 쉽습니다
 - `v*` 태그를 푸시하면 GitHub Release가 자동 생성됩니다
 
 ### 소스 빌드
@@ -71,7 +72,7 @@ src/QmsWeaver.Core/        도메인 로직 (UI 독립)
     HierarchyService         문서번호 → 계층/계보 (F805-05-01 → SOP-805-05 → QP-805 → QM-001)
     FolderScanService        폴더 스캔·기록 메타데이터 추출
     RulesEngine              정합성 점검 + 개정 영향 규칙
-    AiService                Claude API (문안 대조·요약)
+    AiService                LLM API (문안 대조·요약)
     TextExtractService       docx/xlsx/txt 본문 추출
     XlsxImportService        문서 등록 대장(F401-09) 재임포트
     ConfigService/AuditService  로컬 설정 · 감사 추적(JSONL)

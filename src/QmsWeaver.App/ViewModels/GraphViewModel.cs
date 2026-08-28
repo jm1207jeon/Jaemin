@@ -16,7 +16,14 @@ public sealed class LegendItem
     public string Label { get; init; } = "";
     public int Count { get; init; }
     public string ColorKey { get; init; } = "";
-    public string Display => $"{Label} {Count}";
+    public string Display => Count > 0 ? $"{Label} {Count}" : Label;
+}
+
+/// <summary>형상 범례 — 문서 성격별 노드 모양 (색과 독립적인 2차 채널).</summary>
+public sealed class ShapeLegendItem
+{
+    public string TypeKey { get; init; } = "";
+    public string Label { get; init; } = "";
 }
 
 public partial class GraphViewModel : ObservableObject
@@ -41,6 +48,18 @@ public partial class GraphViewModel : ObservableObject
     public ObservableCollection<NeighborRow> Neighbors { get; } = new();
     public ObservableCollection<LegendItem> Legend { get; } = new();
 
+    /// <summary>형상 범례 (고정) — 매뉴얼 ◎ · 절차서 ● · 지침 ▢ · 양식 ◆ · 규격 ▲ · 규제 ▼ · 기술문서 ⬢</summary>
+    public List<ShapeLegendItem> ShapeLegend { get; } = new()
+    {
+        new() { TypeKey = NodeTypes.Manual, Label = "매뉴얼" },
+        new() { TypeKey = NodeTypes.Procedure, Label = "절차서" },
+        new() { TypeKey = NodeTypes.Sop, Label = "지침·작업표준" },
+        new() { TypeKey = NodeTypes.Form, Label = "양식" },
+        new() { TypeKey = NodeTypes.Standard, Label = "규격" },
+        new() { TypeKey = NodeTypes.Regulation, Label = "규제" },
+        new() { TypeKey = NodeTypes.TechDoc, Label = "기술문서" },
+    };
+
     /// <summary>GraphView 코드비하인드가 구독 — 컨트롤에 선택/필터 변경을 전달.</summary>
     public event Action<string>? NodeSelectionRequested;
     public event Action? FilterChanged;
@@ -51,28 +70,34 @@ public partial class GraphViewModel : ObservableObject
         RefreshLegend();
     }
 
+    /// <summary>색 범례 = ISO 13485 조항 대분류 (+외부 계열). 카운트는 현재 보이는 노드 기준.</summary>
     public void RefreshLegend()
     {
         Legend.Clear();
-        var counts = _services.Network.Network.Nodes
-            .Where(n => IsTypeVisible(n.Type))
-            .GroupBy(n => n.Type)
-            .ToDictionary(g => g.Key, g => g.Count());
-        foreach (var (type, colorKey) in new[]
+        var visible = _services.Network.Network.Nodes.Where(n => IsTypeVisible(n.Type)).ToList();
+        int ClauseCount(int c) => visible.Count(n =>
+            n.Clause == c && n.Type is NodeTypes.Procedure or NodeTypes.Sop
+                or NodeTypes.WorkStandard or NodeTypes.Form);
+        foreach (var (clause, label, key) in new[]
         {
-            (NodeTypes.Manual, "TypeManualColor"),
-            (NodeTypes.Procedure, "TypeProcedureColor"),
-            (NodeTypes.Sop, "TypeSopColor"),
-            (NodeTypes.WorkStandard, "TypeWorkStdColor"),
-            (NodeTypes.Form, "TypeFormColor"),
-            (NodeTypes.Standard, "TypeStandardColor"),
-            (NodeTypes.Regulation, "TypeRegulationColor"),
-            (NodeTypes.TechDoc, "TypeTechDocColor"),
+            (4, "4장 시스템·문서", "Clause4Color"),
+            (5, "5장 경영책임", "Clause5Color"),
+            (6, "6장 자원관리", "Clause6Color"),
+            (7, "7장 제품실현", "Clause7Color"),
+            (8, "8장 측정·개선", "Clause8Color"),
         })
         {
-            if (counts.TryGetValue(type, out var c))
-                Legend.Add(new LegendItem { Label = NodeTypes.Label(type), Count = c, ColorKey = colorKey });
+            var c = ClauseCount(clause);
+            if (c > 0) Legend.Add(new LegendItem { Label = label, Count = c, ColorKey = key });
         }
+        void AddExternal(string type, string label, string key)
+        {
+            var c = visible.Count(n => n.Type == type);
+            if (c > 0) Legend.Add(new LegendItem { Label = label, Count = c, ColorKey = key });
+        }
+        AddExternal(NodeTypes.Standard, "규격", "NodeStandardColor");
+        AddExternal(NodeTypes.Regulation, "규제", "NodeRegulationColor");
+        AddExternal(NodeTypes.TechDoc, "기술문서", "NodeTechDocColor");
     }
 
     /// <summary>검색: 문서번호/이름 매칭 노드를 찾아 선택·센터링 요청. 결과 노드 ID 반환.</summary>

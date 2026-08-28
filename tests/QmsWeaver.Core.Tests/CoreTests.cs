@@ -112,6 +112,70 @@ public class AiParseTests
     }
 }
 
+public class PostProcessTests
+{
+    private static RecordEntry Make(string path, string? node, string? group, string? unit, int? rev, DateOnly? date = null)
+        => new()
+        {
+            FilePath = path, FileName = Path.GetFileName(path),
+            Title = Path.GetFileNameWithoutExtension(path),
+            NodeId = node, Group = group, Unit = unit, Rev = rev, PerformedDate = date,
+        };
+
+    [Fact]
+    public void SameDocumentRevisions_LatestIsCurrent_OthersKept()
+    {
+        var records = new List<RecordEntry>
+        {
+            Make(@"/v/열처리/2025/PQ보고서_Rev.0.docx", "QP-706", "열처리", "2025", 0),
+            Make(@"/v/열처리/2025/PQ보고서_Rev.1.docx", "QP-706", "열처리", "2025", 1),
+            Make(@"/v/열처리/2025/PQ보고서_Rev.2.docx", "QP-706", "열처리", "2025", 2),
+        };
+        FolderScanService.PostProcess(records);
+        Assert.Equal(3, records.Count); // 구버전도 조회 가능하게 유지
+        Assert.Single(records, r => r.IsCurrent);
+        Assert.Equal(2, records.Single(r => r.IsCurrent).Rev);
+    }
+
+    [Fact]
+    public void DifferentYears_AreNotTreatedAsRevisions()
+    {
+        var records = new List<RecordEntry>
+        {
+            Make(@"/v/열처리/2024/PQ보고서_Rev.0.docx", "QP-706", "열처리", "2024", 0),
+            Make(@"/v/열처리/2025/PQ보고서_Rev.0.docx", "QP-706", "열처리", "2025", 0),
+        };
+        FolderScanService.PostProcess(records);
+        Assert.All(records, r => Assert.True(r.IsCurrent)); // 연차별 수행 기록은 각각 현행
+    }
+
+    [Fact]
+    public void DocxPreferredOverPdf_WithVisualIndicator()
+    {
+        var records = new List<RecordEntry>
+        {
+            Make(@"/v/열처리/2025/PQ보고서_Rev.1.pdf", "QP-706", "열처리", "2025", 1),
+            Make(@"/v/열처리/2025/PQ보고서_Rev.1.docx", "QP-706", "열처리", "2025", 1),
+        };
+        FolderScanService.PostProcess(records);
+        var only = Assert.Single(records);
+        Assert.Equal("DOCX", only.Format);
+        Assert.Contains("PDF", only.AltFormats);
+        Assert.Equal("DOCX (+PDF)", only.FormatDisplay);
+    }
+
+    [Fact]
+    public void PdfAloneStaysPdf()
+    {
+        var records = new List<RecordEntry>
+        {
+            Make(@"/v/열처리/2025/스캔보고서_Rev.0.pdf", "QP-706", "열처리", "2025", 0),
+        };
+        FolderScanService.PostProcess(records);
+        Assert.Equal("PDF", Assert.Single(records).FormatDisplay);
+    }
+}
+
 public class FolderScanTests : IDisposable
 {
     private readonly string _root = Path.Combine(Path.GetTempPath(), "qms-test-" + Guid.NewGuid().ToString("N"));

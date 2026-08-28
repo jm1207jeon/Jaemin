@@ -31,12 +31,11 @@ jobs:
       - uses: actions/setup-dotnet@v4
         with:
           dotnet-version: "8.0.x"
-      - name: Publish (self-contained single file)
+      # 단일 거대 exe 대신 모듈별 파일이 정리된 폴더 배포 (exe는 작고, 라이브러리는 dll로 분리)
+      - name: Publish (self-contained, multi-file layout)
         run: >
           dotnet publish src/QmsWeaver.App -c Release -r win-x64
           --self-contained true
-          -p:PublishSingleFile=true
-          -p:IncludeNativeLibrariesForSelfExtract=true
           -o publish/win-x64
       - name: Upload artifact
         uses: actions/upload-artifact@v4

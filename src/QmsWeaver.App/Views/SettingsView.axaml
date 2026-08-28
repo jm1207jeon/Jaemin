@@ -9,10 +9,12 @@
           <TextBlock Classes="h2" Text="폴더 연결 — 기록 자동 수집"/>
           <TextBlock Classes="dim" TextWrapping="Wrap"
                      Text="통합 루트(문서번호 비움) 또는 노드별 폴더를 연결하면, 하위 구조를 재귀 스캔하여 파일명·폴더명에서 문서번호/일자/Rev를 추출해 기록 리스트를 자동 생성합니다. 우선순위: 노드별 지정 &gt; 통합 루트 자동 매칭."/>
-          <Grid ColumnDefinitions="*,150,110" ColumnSpacing="8">
+          <Grid ColumnDefinitions="*,Auto,150,110" ColumnSpacing="8">
             <TextBox Grid.Column="0" Watermark="폴더 경로 (예: V:\QMS-Records)" Text="{Binding Settings.NewPath}"/>
-            <TextBox Grid.Column="1" Watermark="문서번호 (선택)" Text="{Binding Settings.NewNodeId}"/>
-            <Button Grid.Column="2" Content="폴더 추가" Command="{Binding Settings.AddBindingCommand}"
+            <Button Grid.Column="1" Content="찾아보기…" Click="OnBrowseFolder"
+                    ToolTip.Tip="폴더를 직접 열어서 선택"/>
+            <TextBox Grid.Column="2" Watermark="문서번호 (선택)" Text="{Binding Settings.NewNodeId}"/>
+            <Button Grid.Column="3" Content="폴더 추가" Command="{Binding Settings.AddBindingCommand}"
                     HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"/>
           </Grid>
           <ListBox ItemsSource="{Binding Settings.Bindings}"
@@ -32,15 +34,31 @@
         </StackPanel>
       </Border>
 
+      <!-- 화면 표시 -->
+      <Border Classes="card">
+        <StackPanel Spacing="10">
+          <TextBlock Classes="h2" Text="화면 표시"/>
+          <Grid ColumnDefinitions="130,140,60,130,140" ColumnSpacing="10">
+            <TextBlock Grid.Column="0" Text="폰트 크기" Classes="dim" VerticalAlignment="Center"/>
+            <ComboBox Grid.Column="1" ItemsSource="{Binding Settings.FontSizes}"
+                      SelectedItem="{Binding Settings.UiFontSize}" HorizontalAlignment="Stretch"/>
+            <TextBlock Grid.Column="3" Text="테이블 행간" Classes="dim" VerticalAlignment="Center"/>
+            <ComboBox Grid.Column="4" ItemsSource="{Binding Settings.RowHeights}"
+                      SelectedItem="{Binding Settings.TableRowHeight}" HorizontalAlignment="Stretch"/>
+          </Grid>
+          <TextBlock Classes="dim" Text="변경 즉시 적용되며 저장됩니다. 테이블은 짝수 행에 옅은 배경이 들어가 좌우 시선 추적을 돕습니다."/>
+        </StackPanel>
+      </Border>
+
       <!-- AI 연결 -->
       <Border Classes="card">
         <StackPanel Spacing="10">
-          <TextBlock Classes="h2" Text="AI 분석 연결 (Claude API)"/>
+          <TextBlock Classes="h2" Text="AI 분석 연결 (LLM API)"/>
           <TextBlock Classes="dim" TextWrapping="Wrap"
-                     Text="키를 입력하면 검토하기에서 AI 문안 대조(판정기준·수치·요구항목 비교)와 문서 요약이 활성화됩니다. 키는 이 PC의 로컬 설정 파일에만 저장됩니다. 미입력 시 규칙 기반 로컬 분석만 동작합니다."/>
+                     Text="LLM API 키를 입력하면 검토하기에서 AI 문안 대조(판정기준·수치·요구항목 비교)와 문서 요약이 활성화됩니다. 기본 엔드포인트는 Anthropic API이며, 호환 엔드포인트·모델로 교체할 수 있습니다. 키는 이 PC의 로컬 설정 파일에만 저장되며, 미입력 시 규칙 기반 로컬 분석만 동작합니다."/>
           <Grid ColumnDefinitions="130,*" RowDefinitions="Auto,Auto,Auto" ColumnSpacing="10" RowSpacing="8">
             <TextBlock Grid.Row="0" Grid.Column="0" Text="API 키" Classes="dim" VerticalAlignment="Center"/>
-            <TextBox Grid.Row="0" Grid.Column="1" PasswordChar="●" Watermark="sk-ant-…"
+            <TextBox Grid.Row="0" Grid.Column="1" PasswordChar="●" Watermark="LLM API 키"
                      Text="{Binding Settings.AiApiKey}"/>
             <TextBlock Grid.Row="1" Grid.Column="0" Text="모델" Classes="dim" VerticalAlignment="Center"/>
             <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding Settings.AiModel}"/>

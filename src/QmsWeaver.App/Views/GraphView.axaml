@@ -29,26 +29,47 @@
         </Border>
         <Panel>
           <controls:NetworkGraphControl x:Name="Graph"/>
-          <!-- 범례 오버레이 (색상 단독 의존 방지: 라벨+카운트 병기) -->
+          <!-- 범례 오버레이: 색 = ISO 조항 대분류, 형상 = 문서 성격 (색 단독 의존 금지) -->
           <Border HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="10"
                   Background="{DynamicResource SurfaceBrush}"
                   BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1"
-                  CornerRadius="8" Padding="10,7" Opacity="0.94">
-            <ItemsControl ItemsSource="{Binding Graph.Legend}">
-              <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                  <WrapPanel MaxWidth="360"/>
-                </ItemsPanelTemplate>
-              </ItemsControl.ItemsPanel>
-              <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                  <StackPanel Orientation="Horizontal" Spacing="5" Margin="0,1,12,1">
-                    <Ellipse Width="9" Height="9" VerticalAlignment="Center" Fill="{Binding ColorKey, Converter={x:Static controls:ResourceBrushConverter.Instance}}"/>
-                    <TextBlock Text="{Binding Display}" FontSize="11" Foreground="{DynamicResource Ink2Brush}"/>
-                  </StackPanel>
-                </DataTemplate>
-              </ItemsControl.ItemTemplate>
-            </ItemsControl>
+                  CornerRadius="8" Padding="11,8" Opacity="0.95">
+            <StackPanel Spacing="5">
+              <ItemsControl ItemsSource="{Binding Graph.Legend}">
+                <ItemsControl.ItemsPanel>
+                  <ItemsPanelTemplate>
+                    <WrapPanel MaxWidth="420"/>
+                  </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                  <DataTemplate>
+                    <StackPanel Orientation="Horizontal" Spacing="5" Margin="0,1,12,1">
+                      <Ellipse Width="9" Height="9" VerticalAlignment="Center"
+                               Fill="{Binding ColorKey, Converter={x:Static controls:ResourceBrushConverter.Instance}}"/>
+                      <TextBlock Text="{Binding Display}" FontSize="11" Foreground="{DynamicResource Ink2Brush}"/>
+                    </StackPanel>
+                  </DataTemplate>
+                </ItemsControl.ItemTemplate>
+              </ItemsControl>
+              <Border Height="1" Background="{DynamicResource BorderBrush}"/>
+              <ItemsControl ItemsSource="{Binding Graph.ShapeLegend}">
+                <ItemsControl.ItemsPanel>
+                  <ItemsPanelTemplate>
+                    <WrapPanel MaxWidth="420"/>
+                  </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                  <DataTemplate>
+                    <StackPanel Orientation="Horizontal" Spacing="5" Margin="0,1,11,1">
+                      <Path Width="12" Height="12" VerticalAlignment="Center" Stretch="None"
+                            Fill="{DynamicResource Ink2Brush}"
+                            Data="{Binding TypeKey, Converter={x:Static controls:TypeShapeConverter.Instance}}"/>
+                      <TextBlock Text="{Binding Label}" FontSize="11" Foreground="{DynamicResource Ink2Brush}"/>
+                    </StackPanel>
+                  </DataTemplate>
+                </ItemsControl.ItemTemplate>
+              </ItemsControl>
+            </StackPanel>
           </Border>
         </Panel>
       </DockPanel>

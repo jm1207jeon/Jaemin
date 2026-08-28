@@ -20,6 +20,22 @@ public sealed class RecordEntry
     public long SizeBytes { get; set; }
     public DateTime ModifiedUtc { get; set; }
 
+    /// <summary>같은 문서의 여러 개정본 중 최신본인가. 구버전도 목록에 남아 조회 가능하다.</summary>
+    public bool IsCurrent { get; set; } = true;
+
+    /// <summary>대표 파일 형식 (DOCX/PDF/XLSX/...). 같은 기록에 docx·pdf가 함께 있으면 docx가 대표.</summary>
+    public string Format => Path.GetExtension(FilePath).TrimStart('.').ToUpperInvariant();
+
+    /// <summary>대표 형식 외에 함께 존재하는 형식들 (예: docx 대표 + PDF 사본).</summary>
+    public List<string> AltFormats { get; set; } = new();
+
+    /// <summary>테이블 표시용: "DOCX (+PDF)" 형태.</summary>
+    public string FormatDisplay =>
+        AltFormats.Count == 0 ? Format : $"{Format} (+{string.Join(",", AltFormats)})";
+
+    /// <summary>버전 그룹핑 키 계산용 — Rev/일자/확장자를 제거한 정규화 제목.</summary>
+    public string NormalizedTitle { get; set; } = "";
+
     public RecordStatus Status
     {
         get

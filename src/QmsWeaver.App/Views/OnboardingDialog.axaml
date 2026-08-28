@@ -1,0 +1,44 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="QmsWeaver.App.Views.OnboardingDialog"
+        Title="QMS Weaver 시작"
+        Width="480" SizeToContent="Height" CanResize="False"
+        WindowStartupLocation="CenterOwner"
+        Background="{DynamicResource SurfaceBrush}"
+        FontFamily="{StaticResource AppFont}">
+  <StackPanel Margin="26,22" Spacing="14">
+    <StackPanel Orientation="Horizontal" Spacing="12">
+      <Border Background="{DynamicResource AccentBrush}" CornerRadius="9" Width="38" Height="38">
+        <TextBlock Text="Q" FontSize="20" FontWeight="Bold" Foreground="{DynamicResource AccentInkBrush}"
+                   HorizontalAlignment="Center" VerticalAlignment="Center"/>
+      </Border>
+      <StackPanel VerticalAlignment="Center">
+        <TextBlock Text="QMS Weaver에 오신 것을 환영합니다" FontSize="15.5" FontWeight="SemiBold"
+                   Foreground="{DynamicResource InkBrush}"/>
+        <TextBlock Text="의료기기 품질문서 네트워크 분석 도구" FontSize="12"
+                   Foreground="{DynamicResource Ink2Brush}"/>
+      </StackPanel>
+    </StackPanel>
+
+    <Border Background="{DynamicResource Surface2Brush}" CornerRadius="8" Padding="14,12">
+      <StackPanel Spacing="6">
+        <TextBlock TextWrapping="Wrap" FontSize="13" Foreground="{DynamicResource InkBrush}"
+                   Text="ISO 13485를 기준으로 기본 문서 구조가 생성되었습니다."/>
+        <TextBlock TextWrapping="Wrap" FontSize="12" Foreground="{DynamicResource Ink2Brush}"
+                   Text="4장 시스템·문서 → 5장 경영책임 → 6장 자원관리 → 7장 제품실현 → 8장 측정·개선의 골격 위에 MDSAP · EU MDR · FDA · KGMP 규제 분기가 연결되어 있습니다."/>
+      </StackPanel>
+    </Border>
+
+    <TextBlock TextWrapping="Wrap" FontSize="13.5" FontWeight="SemiBold"
+               Foreground="{DynamicResource InkBrush}"
+               Text="QMS 폴더를 연결하시겠습니까?"/>
+    <TextBlock TextWrapping="Wrap" FontSize="12" Foreground="{DynamicResource Ink2Brush}"
+               Text="문서·기록이 저장된 폴더를 선택하면 하위 구조를 스캔하여 문서번호·개정번호·수행일을 자동으로 인식합니다. 나중에 [설정]에서도 연결할 수 있습니다."/>
+
+    <StackPanel Orientation="Horizontal" Spacing="8" HorizontalAlignment="Right" Margin="0,4,0,0">
+      <Button Content="나중에" Click="OnLater" MinWidth="90" HorizontalContentAlignment="Center"/>
+      <Button Classes="primary" Content="예 — 폴더 선택" Click="OnPickFolder" MinWidth="130"
+              HorizontalContentAlignment="Center"/>
+    </StackPanel>
+  </StackPanel>
+</Window>

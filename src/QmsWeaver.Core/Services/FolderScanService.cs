@@ -34,22 +34,111 @@ public sealed partial class FolderScanService
             .ToList();
     }
 
-    public IReadOnlyList<RecordEntry> Scan(IEnumerable<FolderBinding> bindings)
+    public sealed record ScanProgress(int FilesSeen, int RecordsFound, string CurrentDir);
+
+    /// <param name="progress">진행 상황 보고 (파일 수·현재 폴더) — UI가 "멈춘 것처럼" 보이지 않게 한다.</param>
+    /// <param name="onBatch">부분 결과 콜백 — 스캔되는 대로 목록에 반영할 수 있다 (배치 단위).</param>
+    public IReadOnlyList<RecordEntry> Scan(
+        IEnumerable<FolderBinding> bindings,
+        IProgress<ScanProgress>? progress = null,
+        Action<IReadOnlyList<RecordEntry>>? onBatch = null,
+        CancellationToken ct = default)
     {
         var results = new List<RecordEntry>();
+        var batch = new List<RecordEntry>();
+        var filesSeen = 0;
+        var lastDir = "";
+
         foreach (var b in bindings)
         {
             if (!Directory.Exists(b.Path)) continue;
             var opt = b.Recursive ? SearchOption.AllDirectories : SearchOption.TopDirectoryOnly;
             foreach (var file in Directory.EnumerateFiles(b.Path, "*.*", opt))
             {
+                ct.ThrowIfCancellationRequested();
+                filesSeen++;
+                var dir = Path.GetDirectoryName(file) ?? "";
+                if (progress is not null && (filesSeen % 40 == 0 || dir != lastDir))
+                {
+                    lastDir = dir;
+                    progress.Report(new ScanProgress(filesSeen, results.Count, dir));
+                }
+
                 var ext = Path.GetExtension(file).ToLowerInvariant();
                 if (!RecordExtensions.Contains(ext)) continue;
                 if (Path.GetFileName(file).StartsWith("~$")) continue; // Office 임시파일
-                results.Add(BuildEntry(file, b));
+                var entry = BuildEntry(file, b);
+                results.Add(entry);
+                batch.Add(entry);
+                if (onBatch is not null && batch.Count >= 60)
+                {
+                    onBatch(batch.ToArray());
+                    batch.Clear();
+                }
             }
         }
+        if (onBatch is not null && batch.Count > 0) onBatch(batch.ToArray());
+
+        PostProcess(results);
+        progress?.Report(new ScanProgress(filesSeen, results.Count, ""));
         return results;
+    }
+
+    /// <summary>
+    /// 후처리 1) 같은 기록의 docx·pdf 병존 시 docx를 대표로 통합 (요구: docx 우선, 없으면 pdf)
+    ///        2) 같은 문서의 여러 개정본 중 최신본만 IsCurrent — 구버전도 목록에 남는다.
+    /// </summary>
+    internal static void PostProcess(List<RecordEntry> records)
+    {
+        foreach (var r in records)
+            r.NormalizedTitle = NormalizeTitle(r.FileName);
+
+        // 1) 형식 통합: 동일 위치·동일 정규화제목·동일 Rev → 대표 형식 선택
+        var formatRank = new Dictionary<string, int>
+            { ["DOCX"] = 0, ["DOC"] = 1, ["XLSX"] = 2, ["XLS"] = 3, ["PDF"] = 4, ["HWP"] = 5, ["HWPX"] = 6, ["TXT"] = 7 };
+        int Rank(RecordEntry r) => formatRank.GetValueOrDefault(r.Format, 9);
+
+        var toRemove = new HashSet<RecordEntry>();
+        foreach (var grp in records.GroupBy(r =>
+                     (Dir: Path.GetDirectoryName(r.FilePath), r.NodeId, r.NormalizedTitle, r.Rev)))
+        {
+            var members = grp.OrderBy(Rank).ToList();
+            if (members.Count <= 1) continue;
+            var primary = members[0];
+            foreach (var dup in members.Skip(1))
+            {
+                if (!primary.AltFormats.Contains(dup.Format))
+                    primary.AltFormats.Add(dup.Format);
+                toRemove.Add(dup);
+            }
+        }
+        records.RemoveAll(toRemove.Contains);
+
+        // 2) 개정본: 동일 문서(노드+그룹+실행단위+정규화제목)에서 Rev(없으면 수행일) 최신본만 현행.
+        //    실행 단위(연차)가 다르면 별개 수행 기록이므로 개정본으로 묶지 않는다.
+        foreach (var grp in records.GroupBy(r => (r.NodeId, r.Group, r.Unit, r.NormalizedTitle)))
+        {
+            var members = grp.ToList();
+            if (members.Count <= 1) continue;
+            var current = members
+                .OrderByDescending(r => r.Rev ?? int.MinValue)
+                .ThenByDescending(r => r.PerformedDate ?? DateOnly.MinValue)
+                .ThenByDescending(r => r.ModifiedUtc)
+                .First();
+            foreach (var m in members)
+                m.IsCurrent = ReferenceEquals(m, current);
+        }
+    }
+
+    /// <summary>Rev·일자·확장자·괄호숫자를 제거한 제목 — 개정본 그룹핑 키.</summary>
+    internal static string NormalizeTitle(string fileName)
+    {
+        var s = Path.GetFileNameWithoutExtension(fileName);
+        s = RevRx().Replace(s, "");
+        s = DateRx().Replace(s, "");
+        s = Regex.Replace(s, @"\((\d+)\)|복사본", "");
+        s = Regex.Replace(s, @"[_\-\s]+", "");
+        return s.ToLowerInvariant();
     }
 
     private RecordEntry BuildEntry(string file, FolderBinding binding)

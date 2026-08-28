@@ -36,6 +36,7 @@ public class UiSmokeTests
     {
         var services = new AppServices(
             Path.Combine(Path.GetTempPath(), "qmsw-cfg-" + Guid.NewGuid().ToString("N")));
+        services.Config.Config.OnboardingShown = true; // 스모크 캡처에서 온보딩 다이얼로그 제외
         var vm = new MainViewModel(services);
         var window = new MainWindow { DataContext = vm };
         window.Show();
@@ -72,6 +73,16 @@ public class UiSmokeTests
             Capture(window, section);
         }
         window.Close();
+    }
+
+    [AvaloniaFact]
+    public void OnboardingDialog_Renders()
+    {
+        var dialog = new OnboardingDialog();
+        dialog.Show();
+        Dispatcher.UIThread.RunJobs();
+        dialog.CaptureRenderedFrame()?.Save(Path.Combine(ShotDir, "onboarding.png"));
+        dialog.Close();
     }
 
     [AvaloniaFact]

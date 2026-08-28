@@ -71,13 +71,15 @@
                     BorderThickness="0"
                     DoubleTapped="OnRecordDoubleTapped">
             <DataGrid.Columns>
-              <DataGridTextColumn Header="문서" Binding="{Binding Title}" Width="*" MinWidth="180"/>
-              <DataGridTextColumn Header="Rev" Binding="{Binding Rev}" Width="55"/>
-              <DataGridTextColumn Header="수행/작성일" Binding="{Binding Date}" Width="105"/>
-              <DataGridTextColumn Header="작성" Binding="{Binding Author}" Width="70"/>
-              <DataGridTextColumn Header="검토" Binding="{Binding Reviewer}" Width="70"/>
-              <DataGridTextColumn Header="승인" Binding="{Binding Approver}" Width="70"/>
-              <DataGridTextColumn Header="상태" Binding="{Binding Status}" Width="110"/>
+              <DataGridTextColumn Header="문서" Binding="{Binding Title}" Width="*" MinWidth="170"/>
+              <DataGridTextColumn Header="버전" Binding="{Binding Version}" Width="62"/>
+              <DataGridTextColumn Header="Rev" Binding="{Binding Rev}" Width="52"/>
+              <DataGridTextColumn Header="수행/작성일" Binding="{Binding Date}" Width="102"/>
+              <DataGridTextColumn Header="작성" Binding="{Binding Author}" Width="64"/>
+              <DataGridTextColumn Header="검토" Binding="{Binding Reviewer}" Width="64"/>
+              <DataGridTextColumn Header="승인" Binding="{Binding Approver}" Width="64"/>
+              <DataGridTextColumn Header="형식" Binding="{Binding Format}" Width="95"/>
+              <DataGridTextColumn Header="상태" Binding="{Binding Status}" Width="105"/>
             </DataGrid.Columns>
           </DataGrid>
         </DockPanel>

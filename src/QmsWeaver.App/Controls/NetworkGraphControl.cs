@@ -302,21 +302,113 @@ public sealed class NetworkGraphControl : Control
     private Point ToWorld(Point p) => new((p.X - _pan.X) / _zoom, (p.Y - _pan.Y) / _zoom);
 
     // ── 렌더링 ───────────────────────────────────────────────────────
-    private IBrush BrushFor(string key) =>
-        this.FindResource(ActualThemeVariant, key) is Color c ? new SolidColorBrush(c) : Brushes.Gray;
+    private Color ColorFor(string key) =>
+        this.FindResource(ActualThemeVariant, key) is Color c ? c : Colors.Gray;
 
-    private IBrush TypeBrush(string type) => BrushFor(type switch
+    private IBrush BrushFor(string key) => new SolidColorBrush(ColorFor(key));
+
+    /// <summary>
+    /// 색상 체계: ISO 13485 조항(4~8)이 대분류 색을 결정하고,
+    /// 같은 조항에 종속된 지침/작업표준/양식은 그 색의 밝은 변형을 갖는다 (색 가족).
+    /// 매뉴얼·규격·규제·기술문서는 별도의 중립 계열.
+    /// </summary>
+    private IBrush NodeBrush(DocNode doc)
     {
-        NodeTypes.Manual => "TypeManualColor",
-        NodeTypes.Procedure => "TypeProcedureColor",
-        NodeTypes.Sop => "TypeSopColor",
-        NodeTypes.WorkStandard => "TypeWorkStdColor",
-        NodeTypes.Form => "TypeFormColor",
-        NodeTypes.Standard => "TypeStandardColor",
-        NodeTypes.Regulation => "TypeRegulationColor",
-        NodeTypes.TechDoc => "TypeTechDocColor",
-        _ => "Ink3Color",
-    });
+        switch (doc.Type)
+        {
+            case NodeTypes.Manual: return BrushFor("NodeManualColor");
+            case NodeTypes.Standard: return BrushFor("NodeStandardColor");
+            case NodeTypes.Regulation: return BrushFor("NodeRegulationColor");
+            case NodeTypes.TechDoc: return BrushFor("NodeTechDocColor");
+        }
+        var baseColor = ColorFor(doc.Clause switch
+        {
+            4 => "Clause4Color",
+            5 => "Clause5Color",
+            6 => "Clause6Color",
+            7 => "Clause7Color",
+            8 => "Clause8Color",
+            _ => "Ink3Color",
+        });
+        // 하위 계층일수록 밝고 옅게 — 절차서(기본) → 지침·작업표준 → 양식
+        var lighten = doc.Type switch
+        {
+            NodeTypes.Sop or NodeTypes.WorkStandard => 0.22,
+            NodeTypes.Form => 0.42,
+            _ => 0.0,
+        };
+        return new SolidColorBrush(Lighten(baseColor, lighten));
+    }
+
+    private Color Lighten(Color c, double amount)
+    {
+        if (amount <= 0) return c;
+        // 다크 테마에선 배경이 어두우므로 반대로 어둡게 내려 가족 관계를 유지
+        var dark = ActualThemeVariant == Avalonia.Styling.ThemeVariant.Dark;
+        double Mix(double ch, double target) => ch + (target - ch) * amount;
+        var target = dark ? 30.0 : 255.0;
+        return Color.FromRgb(
+            (byte)Mix(c.R, target), (byte)Mix(c.G, target), (byte)Mix(c.B, target));
+    }
+
+    /// <summary>
+    /// 문서 성격별 노드 형상 — 색과 독립적인 2차 시각 채널 (색각 이상·흑백 인쇄 대응).
+    /// 매뉴얼=이중 링 원, 절차서=원, 지침·작업표준=둥근 사각, 양식=다이아몬드,
+    /// 규격=삼각형(▲), 규제=역삼각형(▼), 기술문서=육각형.
+    /// </summary>
+    private static void DrawNodeShape(DrawingContext ctx, string type, Point p, double r, IBrush fill, Pen stroke)
+    {
+        switch (type)
+        {
+            case NodeTypes.Manual:
+                ctx.DrawEllipse(fill, stroke, p, r, r);
+                ctx.DrawEllipse(null, stroke, p, r + 3, r + 3);
+                break;
+            case NodeTypes.Procedure:
+                ctx.DrawEllipse(fill, stroke, p, r, r);
+                break;
+            case NodeTypes.Sop or NodeTypes.WorkStandard:
+                ctx.DrawRectangle(fill, stroke,
+                    new RoundedRect(new Rect(p.X - r, p.Y - r, r * 2, r * 2), r * 0.35));
+                break;
+            case NodeTypes.Form:
+                DrawPolygon(ctx, fill, stroke,
+                    new[] { new Point(p.X, p.Y - r), new Point(p.X + r, p.Y), new Point(p.X, p.Y + r), new Point(p.X - r, p.Y) });
+                break;
+            case NodeTypes.Standard:
+                DrawPolygon(ctx, fill, stroke,
+                    new[] { new Point(p.X, p.Y - r), new Point(p.X + r * 0.95, p.Y + r * 0.75), new Point(p.X - r * 0.95, p.Y + r * 0.75) });
+                break;
+            case NodeTypes.Regulation:
+                DrawPolygon(ctx, fill, stroke,
+                    new[] { new Point(p.X - r * 0.95, p.Y - r * 0.75), new Point(p.X + r * 0.95, p.Y - r * 0.75), new Point(p.X, p.Y + r) });
+                break;
+            case NodeTypes.TechDoc:
+                var pts = new Point[6];
+                for (var i = 0; i < 6; i++)
+                {
+                    var a = Math.PI / 3 * i - Math.PI / 6;
+                    pts[i] = new Point(p.X + Math.Cos(a) * r, p.Y + Math.Sin(a) * r);
+                }
+                DrawPolygon(ctx, fill, stroke, pts);
+                break;
+            default:
+                ctx.DrawEllipse(fill, stroke, p, r, r);
+                break;
+        }
+    }
+
+    private static void DrawPolygon(DrawingContext ctx, IBrush fill, Pen stroke, Point[] pts)
+    {
+        var geo = new StreamGeometry();
+        using (var g = geo.Open())
+        {
+            g.BeginFigure(pts[0], true);
+            for (var i = 1; i < pts.Length; i++) g.LineTo(pts[i]);
+            g.EndFigure(true);
+        }
+        ctx.DrawGeometry(fill, stroke, geo);
+    }
 
     public override void Render(DrawingContext ctx)
     {
@@ -358,11 +450,11 @@ public sealed class NetworkGraphControl : Control
             using (ctx.PushOpacity(opacity))
             {
                 if (isSel)
-                    ctx.DrawEllipse(null, new Pen(accent, 2.5), p, r + 5, r + 5);
+                    ctx.DrawEllipse(null, new Pen(accent, 2.5), p, r + 6, r + 6);
                 else if (isHover)
-                    ctx.DrawEllipse(null, new Pen(accent, 1.5), p, r + 3.5, r + 3.5);
+                    ctx.DrawEllipse(null, new Pen(accent, 1.5), p, r + 4.5, r + 4.5);
                 var stroke = n.Doc.Gap == true ? new Pen(crit, 2) { DashStyle = DashStyle.Dash } : new Pen(surface, 1.2);
-                ctx.DrawEllipse(TypeBrush(n.Doc.Type), stroke, p, r, r);
+                DrawNodeShape(ctx, n.Doc.Type, p, r, NodeBrush(n.Doc), stroke);
 
                 // 시맨틱 줌: 항상 라벨(주요 타입) + 선택·이웃·호버 시 라벨, 줌인하면 전체
                 var showLabel = n.Doc.Type is NodeTypes.Manual or NodeTypes.Procedure

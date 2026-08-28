@@ -21,6 +21,17 @@
           <Color x:Key="GoodColor">#008300</Color>
           <Color x:Key="WarnColor">#C98500</Color>
           <Color x:Key="CritColor">#C73A39</Color>
+          <!-- ISO 13485 조항별 대분류 색 (저채도 모던). 하위 문서는 코드에서 명도 변형 -->
+          <Color x:Key="Clause4Color">#64748B</Color>  <!-- 4장 품질시스템·문서 : slate -->
+          <Color x:Key="Clause5Color">#7C6FA8</Color>  <!-- 5장 경영책임 : muted violet -->
+          <Color x:Key="Clause6Color">#4E8F84</Color>  <!-- 6장 자원관리 : muted teal -->
+          <Color x:Key="Clause7Color">#4A7FB5</Color>  <!-- 7장 제품실현 : soft blue -->
+          <Color x:Key="Clause8Color">#B08947</Color>  <!-- 8장 측정·분석·개선 : soft amber -->
+          <Color x:Key="NodeManualColor">#2F4A66</Color>
+          <Color x:Key="NodeStandardColor">#6E8F5E</Color>
+          <Color x:Key="NodeRegulationColor">#A86464</Color>
+          <Color x:Key="NodeTechDocColor">#A87B5C</Color>
+          <Color x:Key="RowAltColor">#F3F6F9</Color>
           <Color x:Key="TypeManualColor">#2A78D6</Color>
           <Color x:Key="TypeProcedureColor">#1BAF7A</Color>
           <Color x:Key="TypeSopColor">#4A3AA7</Color>
@@ -44,6 +55,16 @@
           <Color x:Key="GoodColor">#4CAF50</Color>
           <Color x:Key="WarnColor">#C98500</Color>
           <Color x:Key="CritColor">#E66767</Color>
+          <Color x:Key="Clause4Color">#94A3B8</Color>
+          <Color x:Key="Clause5Color">#A79BD0</Color>
+          <Color x:Key="Clause6Color">#6FB5A8</Color>
+          <Color x:Key="Clause7Color">#6FA3D6</Color>
+          <Color x:Key="Clause8Color">#C9A86A</Color>
+          <Color x:Key="NodeManualColor">#8FB3D4</Color>
+          <Color x:Key="NodeStandardColor">#93B583</Color>
+          <Color x:Key="NodeRegulationColor">#C98A8A</Color>
+          <Color x:Key="NodeTechDocColor">#C99C7D</Color>
+          <Color x:Key="RowAltColor">#1F2933</Color>
           <Color x:Key="TypeManualColor">#3987E5</Color>
           <Color x:Key="TypeProcedureColor">#199E70</Color>
           <Color x:Key="TypeSopColor">#9085E9</Color>
@@ -67,11 +88,20 @@
       <SolidColorBrush x:Key="GoodBrush" Color="{DynamicResource GoodColor}"/>
       <SolidColorBrush x:Key="WarnBrush" Color="{DynamicResource WarnColor}"/>
       <SolidColorBrush x:Key="CritBrush" Color="{DynamicResource CritColor}"/>
+      <SolidColorBrush x:Key="RowAltBrush" Color="{DynamicResource RowAltColor}"/>
 
       <FontFamily x:Key="AppFont">Malgun Gothic, Apple SD Gothic Neo, Noto Sans CJK KR, Noto Sans KR, Inter, sans-serif</FontFamily>
       <FontFamily x:Key="MonoFont">Cascadia Mono, Consolas, D2Coding, monospace</FontFamily>
     </ResourceDictionary>
   </Styles.Resources>
+
+  <!-- 테이블: 행간(설정 연동) + 얼룩말 줄무늬(좌우 시선 추적 보조) -->
+  <Style Selector="DataGrid">
+    <Setter Property="RowHeight" Value="{DynamicResource TableRowHeight}"/>
+  </Style>
+  <Style Selector="DataGridRow:nth-child(2n)">
+    <Setter Property="Background" Value="{DynamicResource RowAltBrush}"/>
+  </Style>
 
   <!-- 공통 카드 스타일 -->
   <Style Selector="Border.card">

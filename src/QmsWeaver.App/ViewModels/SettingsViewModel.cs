@@ -24,6 +24,15 @@ public partial class SettingsViewModel : ObservableObject
     [ObservableProperty] private BindingRow? _selectedBinding;
     [ObservableProperty] private string _scanStatus = "";
 
+    // 화면 표시 설정
+    public List<double> FontSizes { get; } = new() { 11, 12, 13, 14, 15, 16, 17 };
+    public List<double> RowHeights { get; } = new() { 28, 31, 34, 38, 42, 48 };
+    [ObservableProperty] private double _uiFontSize;
+    [ObservableProperty] private double _tableRowHeight;
+
+    /// <summary>화면 설정 변경 시 MainWindow가 즉시 적용하도록 통지.</summary>
+    public event Action? UiPrefsChanged;
+
     // AI 설정
     [ObservableProperty] private string _aiBaseUrl;
     [ObservableProperty] private string _aiModel;
@@ -38,8 +47,26 @@ public partial class SettingsViewModel : ObservableObject
         _aiBaseUrl = ai.BaseUrl;
         _aiModel = ai.Model;
         _aiApiKey = ai.ApiKey;
+        _uiFontSize = services.Config.Config.UiFontSize;
+        _tableRowHeight = services.Config.Config.TableRowHeight;
+        // 스캔 진행률 실시간 반영 — "스캔 중"만 떠 있는 문제 해결
+        services.ScanProgressChanged += () => ScanStatus = services.ScanStatus;
         RefreshBindings();
     }
+
+    partial void OnUiFontSizeChanged(double value) => ApplyUiPrefs();
+    partial void OnTableRowHeightChanged(double value) => ApplyUiPrefs();
+
+    private void ApplyUiPrefs()
+    {
+        _services.Config.Config.UiFontSize = UiFontSize;
+        _services.Config.Config.TableRowHeight = TableRowHeight;
+        _services.Config.Save();
+        UiPrefsChanged?.Invoke();
+    }
+
+    /// <summary>네이티브 폴더 선택 다이얼로그 결과를 입력칸에 채운다 (뷰에서 호출).</summary>
+    public void SetPickedFolder(string path) => NewPath = path;
 
     private void RefreshBindings()
     {
@@ -90,13 +117,15 @@ public partial class SettingsViewModel : ObservableObject
     {
         if (IsBusy) return;
         IsBusy = true;
-        ScanStatus = "스캔 중…";
+        ScanStatus = "스캔 시작…";
         try
         {
             await _services.RescanAsync();
             var unmatched = _services.Records.Count(r => r.NodeId is null);
+            var old = _services.Records.Count(r => !r.IsCurrent);
             ScanStatus = $"스캔 완료 — 기록 {_services.Records.Count}건" +
-                         (unmatched > 0 ? $" (미분류 {unmatched}건 → 기록 탐색의 인박스 확인)" : "");
+                         (old > 0 ? $" (현행 {_services.Records.Count - old} · 구버전 {old})" : "") +
+                         (unmatched > 0 ? $" · 미분류 {unmatched}건 → 기록 탐색의 인박스 확인" : "");
         }
         finally
         {

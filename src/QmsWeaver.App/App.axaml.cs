@@ -15,9 +15,11 @@ public class App : Application
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
             var services = new AppServices();
+            Resources["TableRowHeight"] = services.Config.Config.TableRowHeight;
             desktop.MainWindow = new MainWindow
             {
                 DataContext = new MainViewModel(services),
+                FontSize = services.Config.Config.UiFontSize,
             };
         }
         base.OnFrameworkInitializationCompleted();
